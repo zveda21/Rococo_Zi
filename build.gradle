@@ -31,6 +31,10 @@ subprojects {
         postgresDriverVersion = '42.7.3'
         springVaultVersion = '4.1.3'
         flywayVersion = '10.17.1'
+        springVaultVersion = '4.1.3'
+        springGrpcVersion = '3.1.0.RELEASE'
+        springGraphqlDateTimeVersion = '6.0.0'
+        openApiVersion = '2.6.0'
 
         dockerImage = System.getProperty("os.arch") == "aarch64" || System.getProperty("os.arch") == "arm64"
                 ? "arm64v8/eclipse-temurin:21-jdk"
