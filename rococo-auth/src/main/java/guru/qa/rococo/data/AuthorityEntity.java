@@ -21,14 +21,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "authority")
+@Table(name = "authorities")
 public class AuthorityEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
+    @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(nullable = false, columnDefinition = "enum")
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Authority authority;
 

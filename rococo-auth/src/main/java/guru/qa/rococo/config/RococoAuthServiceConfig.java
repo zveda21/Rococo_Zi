@@ -48,8 +48,8 @@ public class RococoAuthServiceConfig {
 
     @Autowired
     public RococoAuthServiceConfig(KeyManager keyManager,
-                             @Value("${rococo-ui.uri}") String frontUri,
-                             @Value("${rococo-auth.uri}") String authUri,
+                             @Value("${rococo-front.base-uri}") String frontUri,
+                             @Value("${rococo-auth.base-uri}") String authUri,
                              CorsCustomizer corsCustomizer,
                              @Value("${server.port}") String serverPort) {
         this.keyManager = keyManager;

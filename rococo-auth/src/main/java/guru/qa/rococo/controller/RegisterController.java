@@ -36,7 +36,7 @@ public class RegisterController {
 
     @Autowired
     public RegisterController(RococoUserService userService,
-                              @Value("${rococo-ui.uri}") String frontUri) {
+                              @Value("${rococo-front.base-uri}") String frontUri) {
         this.userService = userService;
         this.frontUri = frontUri;
     }

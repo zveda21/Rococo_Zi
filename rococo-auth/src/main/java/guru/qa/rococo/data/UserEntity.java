@@ -25,9 +25,10 @@ import static jakarta.persistence.FetchType.EAGER;
 @Entity
 @Table(name = "\"user\"")
 public class UserEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, columnDefinition = "BINARY(16)")
+    @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
     @Column(nullable = false, unique = true)

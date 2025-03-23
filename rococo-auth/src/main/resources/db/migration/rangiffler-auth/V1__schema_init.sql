@@ -1,6 +1,8 @@
-create table if not exists `user`
+create extension if not exists "uuid-ossp";
+
+create table if not exists "user"
 (
-    id                      binary(16) unique  not null default (UUID_TO_BIN(UUID(), true)),
+    id                      UUID unique        not null default uuid_generate_v1(),
     username                varchar(50) unique not null,
     password                varchar(255)       not null,
     enabled                 boolean            not null,
@@ -10,11 +12,10 @@ create table if not exists `user`
     primary key (id, username)
 );
 
-create table if not exists `authority`
-(
-    id        binary(16) unique      not null default (UUID_TO_BIN(UUID(), true)),
-    user_id   binary(16)             not null,
-    authority enum ('read', 'write') not null,
-    primary key (id),
-    constraint fk_authorities_users foreign key (user_id) references `user` (id)
+CREATE TABLE IF NOT EXISTS "authorities" (
+    id        UUID NOT NULL DEFAULT uuid_generate_v1(),
+    user_id   UUID NOT NULL,
+    authority VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_authorities PRIMARY KEY (id),
+    CONSTRAINT fk_authorities_users FOREIGN KEY (user_id) REFERENCES "user"(id)
 );
