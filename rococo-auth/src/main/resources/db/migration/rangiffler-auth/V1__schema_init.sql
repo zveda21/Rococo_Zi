@@ -1,6 +1,6 @@
 create extension if not exists "uuid-ossp";
 
-create table if not exists "user"
+create table if not exists "users"
 (
     id                      UUID unique        not null default uuid_generate_v1(),
     username                varchar(50) unique not null,
@@ -17,5 +17,5 @@ CREATE TABLE IF NOT EXISTS "authorities" (
     user_id   UUID NOT NULL,
     authority VARCHAR(50) NOT NULL,
     CONSTRAINT pk_authorities PRIMARY KEY (id),
-    CONSTRAINT fk_authorities_users FOREIGN KEY (user_id) REFERENCES "user"(id)
+    CONSTRAINT fk_authorities_users FOREIGN KEY (user_id) REFERENCES "users"(id)
 );

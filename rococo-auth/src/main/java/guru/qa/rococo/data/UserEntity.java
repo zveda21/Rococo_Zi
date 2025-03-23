@@ -23,7 +23,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "\"users\"")
 public class UserEntity implements Serializable {
 
     @Id
