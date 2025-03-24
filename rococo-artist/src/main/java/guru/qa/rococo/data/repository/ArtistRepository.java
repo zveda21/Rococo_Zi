@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.UUID;
 
 public interface ArtistRepository extends JpaRepository<ArtistEntity, UUID> {
+
     @Query("SELECT a FROM ArtistEntity a " +
             "WHERE LOWER(a.name) ILIKE LOWER(CONCAT('%', :name, '%')) " +
             "ORDER BY a.name ASC")
