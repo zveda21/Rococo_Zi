@@ -1,9 +1,11 @@
-create extension if not exists "uuid-ossp";
+-- Make sure the uuid-ossp extension is enabled
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-create table if not exists "artist"
+-- Create the artist table if it doesn't exist
+CREATE TABLE IF NOT EXISTS "artist"
 (
-    id       UUID unique  not null default uuid_generate_v1() primary key,
-    name varchar(255) not null,
-    biography text  not null,
-    photo bytea not null
+    id UUID UNIQUE NOT NULL DEFAULT uuid_generate_v1() PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    biography TEXT NOT NULL,
+    photo BYTEA NOT NULL
 );
