@@ -1,51 +1,45 @@
 package guru.qa.rococo.controller;
 
-import guru.qa.rococo.model.ArtistJson;
-import guru.qa.rococo.service.ArtistService;
-import guru.qa.rococo.service.api.RestArtistClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import guru.qa.rococo.data.Artist;
+import guru.qa.rococo.model.page.RestPage;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistController {
 
-    private final RestArtistClient restArtistClient;
-
-    @Autowired
-    public ArtistController(RestArtistClient restArtistClient) {
-        this.restArtistClient = restArtistClient;
-    }
+    // todo implement a RestClient and fetch from rococo-artist api
 
     @GetMapping()
-    public Page<ArtistJson> getAll(@RequestParam(required = false) String name,
-                                   @PageableDefault Pageable pageable) {
-        return restArtistClient.getAll(name, pageable);
+    public Page<Artist> getAll() {
+        var artist1 = new Artist(UUID.randomUUID(), "a", "lorem ipsum", "a.png");
+        var artist2 = new Artist(UUID.randomUUID(), "b", "lorem ipsum", "b.png");
+        return new RestPage<>(List.of(artist1, artist2));
     }
 
     @GetMapping("/{id}")
-    public ArtistJson findArtistById(@PathVariable("id") String id) {
-        return artistService.findArtistById(id);
+    public Artist findArtistById(@PathVariable("id") String id) {
+        return new Artist(UUID.randomUUID(), "a", "lorem ipsum", "a.png");
     }
 
     @PatchMapping()
-    public ArtistJson updateArtist(@RequestBody ArtistJson artist) {
-        return artistService.update(artist);
+    public Artist updateArtist(@RequestBody Artist artist) {
+        return artist;
     }
 
     @PostMapping()
-    public ArtistJson addArtist(@RequestBody ArtistJson artist) {
-        return artistService.add(artist);
+    public Artist addArtist(@RequestBody Artist artist) {
+        return artist;
     }
 }
