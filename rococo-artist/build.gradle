@@ -26,11 +26,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    runtimeOnly "org.postgresql:postgresql:${project.ext.postgresDriverVersion}"
-
-    compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
