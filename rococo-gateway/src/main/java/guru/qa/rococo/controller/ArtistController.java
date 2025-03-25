@@ -1,5 +1,6 @@
 package guru.qa.rococo.controller;
 
+import guru.qa.rococo.controller.client.ArtistClient;
 import guru.qa.rococo.data.Artist;
 import guru.qa.rococo.model.page.RestPage;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -19,18 +19,20 @@ import java.util.UUID;
 @RequestMapping("/api/artist")
 public class ArtistController {
 
-    // todo implement a RestClient and fetch from rococo-artist api
+    private final ArtistClient restClient;
+
+    public ArtistController(ArtistClient restClient) {
+        this.restClient = restClient;
+    }
 
     @GetMapping()
     public Page<Artist> getAll() {
-        var artist1 = new Artist(UUID.randomUUID(), "a", "lorem ipsum", "a.png");
-        var artist2 = new Artist(UUID.randomUUID(), "b", "lorem ipsum", "b.png");
-        return new RestPage<>(List.of(artist1, artist2));
+        return new RestPage<>(restClient.getAll());
     }
 
     @GetMapping("/{id}")
     public Artist findArtistById(@PathVariable("id") String id) {
-        return new Artist(UUID.randomUUID(), "a", "lorem ipsum", "a.png");
+        return restClient.getById(UUID.fromString(id));
     }
 
     @PatchMapping()
