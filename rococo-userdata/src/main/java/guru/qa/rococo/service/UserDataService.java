@@ -1,53 +1,59 @@
 package guru.qa.rococo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.qa.rococo.data.UserDataEntity;
 import guru.qa.rococo.data.repository.UserDataRepository;
 import guru.qa.rococo.ex.NotFoundException;
 import guru.qa.rococo.model.UserDataJson;
 import jakarta.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Component
 public class UserDataService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserDataService.class);
-
     private final UserDataRepository userDataRepository;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public UserDataService(UserDataRepository userDataRepository) {
         this.userDataRepository = userDataRepository;
+        objectMapper = new ObjectMapper();
     }
 
-    @Transactional
-    @KafkaListener(topics = "users", groupId = "userdata")
-    public void listener(@Payload UserDataJson user, ConsumerRecord<String, UserDataJson> cr) {
-        userDataRepository.findByUsername(user.username())
-                .ifPresentOrElse(
-                        u -> LOG.info("### User already exist in DB, kafka event will be skipped: {}", cr.toString()),
-                        () -> {
-                            LOG.info("### Kafka consumer record: {}", cr.toString());
+    @KafkaListener(topics = "users", groupId = "rococo-userdata")
+    public void listener(ConsumerRecord<String, String> record) {
+        log.info("Message received {}", record.value());
+        try {
+            UserDataJson userDataJson = objectMapper.readValue(record.value(), UserDataJson.class);
+            final String username = userDataJson.username();
 
-                            UserDataEntity userDataEntity = new UserDataEntity();
-                            userDataEntity.setUsername(user.username());
-                            UserDataEntity userEntity = userDataRepository.save(userDataEntity);
+            userDataRepository.findByUsername(username)
+                    .ifPresentOrElse(
+                            u -> log.info("User already exist in DB, kafka event will be skipped: {}", record.value()),
+                            () -> {
+                                UserDataEntity userDataEntity = new UserDataEntity();
+                                userDataEntity.setUsername(username);
+                                UserDataEntity userEntity = userDataRepository.save(userDataEntity);
 
-                            LOG.info(
-                                    "### User '{}' successfully saved to database with id: {}",
-                                    user.username(),
-                                    userEntity.getId()
-                            );
-                        }
-                );
+                                log.info(
+                                        "User '{}' successfully saved to database with id: {}",
+                                        username,
+                                        userEntity.getId()
+                                );
+                            }
+                    );
+        } catch (JsonProcessingException e) {
+            log.error("Failed to deserialize message {}. Message will be skipped.", record.value());
+        }
     }
 
     @Transactional
@@ -69,8 +75,7 @@ public class UserDataService {
     }
 
     @Transactional(readOnly = true)
-    public @Nonnull
-    UserDataJson getCurrentUser(@Nonnull String username) {
+    public @Nonnull UserDataJson getCurrentUser(@Nonnull String username) {
         return userDataRepository.findByUsername(username).map(UserDataJson::fromEntity)
                 .orElseThrow(
                         () -> new NotFoundException("Can`t find user by username: '" + username + "'")

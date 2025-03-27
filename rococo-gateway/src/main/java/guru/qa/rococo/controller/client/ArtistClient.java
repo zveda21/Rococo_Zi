@@ -1,9 +1,9 @@
 package guru.qa.rococo.controller.client;
 
-import guru.qa.rococo.data.Artist;
 import guru.qa.rococo.exception.NoResponseException;
+import guru.qa.rococo.model.Artist;
 import guru.qa.rococo.model.page.RestPage;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Log4j2
+@Slf4j
 @Component
 public class ArtistClient {
     private final String url;
@@ -28,6 +28,7 @@ public class ArtistClient {
         try {
             return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
         } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);
         }
     }
@@ -37,6 +38,7 @@ public class ArtistClient {
         try {
             return restTemplate.getForEntity(url, Artist.class).getBody();
         } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);
         }
     }

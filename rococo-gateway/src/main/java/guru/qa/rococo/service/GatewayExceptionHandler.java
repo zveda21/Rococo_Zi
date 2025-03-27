@@ -1,6 +1,6 @@
 package guru.qa.rococo.service;
 
-import guru.qa.rococo.data.ErrorResponse;
+import guru.qa.rococo.model.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

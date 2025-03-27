@@ -1,4 +1,4 @@
-package guru.qa.rococo.data;
+package guru.qa.rococo.model;
 
 import java.util.UUID;
 

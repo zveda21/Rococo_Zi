@@ -7,6 +7,9 @@ rococo-gateway:
 rococo-artist:
   base-uri: 'http://127.0.0.1:8282'
 
+rococo-userdata:
+  base-uri: 'http://127.0.0.1:8089'
+
 rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 

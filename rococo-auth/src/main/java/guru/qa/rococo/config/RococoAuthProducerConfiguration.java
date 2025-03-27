@@ -1,6 +1,5 @@
 package guru.qa.rococo.config;
 
-import guru.qa.rococo.model.UserJson;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +21,8 @@ import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_
 
 @Configuration
 public class RococoAuthProducerConfiguration {
+
+    public static final String TOPIC_USERS = "users";
 
     private final KafkaProperties kafkaProperties;
 
@@ -37,24 +37,24 @@ public class RococoAuthProducerConfiguration {
                 new DefaultSslBundleRegistry()
         ));
         properties.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        properties.put(VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        properties.put(VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return properties;
     }
 
     @Bean
-    public ProducerFactory<String, UserJson> producerFactory() {
+    public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfiguration());
     }
 
     @Bean
-    public KafkaTemplate<String, UserJson> kafkaTemplate() {
+    public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
     @Primary
     public NewTopic topic() {
-        return TopicBuilder.name("users")
+        return TopicBuilder.name(TOPIC_USERS)
                 .partitions(10)
                 .replicas(1)
                 .build();
