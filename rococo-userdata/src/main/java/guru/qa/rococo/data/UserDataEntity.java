@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "user_data")
 public class UserDataEntity implements Serializable {
 
     @Id
