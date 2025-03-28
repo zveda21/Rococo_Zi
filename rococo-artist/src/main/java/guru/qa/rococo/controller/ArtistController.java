@@ -25,4 +25,14 @@ public class ArtistController {
     public ArtistJson getArtistById(@PathVariable("id") String id) {
         return artistService.findArtistById(id);
     }
+
+    @PostMapping
+    public ArtistJson addArtist(@RequestBody ArtistJson artist) {
+        return artistService.add(artist);
+    }
+
+    @PatchMapping
+    public ArtistJson updateArtist(@RequestBody ArtistJson artist) {
+        return artistService.update(artist);
+    }
 }
