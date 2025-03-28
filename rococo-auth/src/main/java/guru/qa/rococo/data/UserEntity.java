@@ -13,10 +13,7 @@ import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static jakarta.persistence.FetchType.EAGER;
 
@@ -25,7 +22,6 @@ import static jakarta.persistence.FetchType.EAGER;
 @Entity
 @Table(name = "\"users\"")
 public class UserEntity implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
@@ -50,7 +46,7 @@ public class UserEntity implements Serializable {
     private Boolean credentialsNonExpired;
 
     @OneToMany(fetch = EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
-    private Set<AuthorityEntity> authorities = new HashSet<>();
+    private List<AuthorityEntity> authorities = new ArrayList<>();
 
     public void addAuthorities(AuthorityEntity... authorities) {
         for (AuthorityEntity authority : authorities) {
