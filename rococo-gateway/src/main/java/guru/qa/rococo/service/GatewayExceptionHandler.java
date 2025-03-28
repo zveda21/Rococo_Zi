@@ -1,15 +1,16 @@
 package guru.qa.rococo.service;
 
+import guru.qa.rococo.exception.InvalidRequestException;
 import guru.qa.rococo.model.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@Log4j2
+@Slf4j
 @RestControllerAdvice
 public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -21,7 +22,10 @@ public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleApiNoResponseException(RuntimeException e, HttpServletRequest request) {
-        log.warn("### Resolve Exception in @RestControllerAdvice ", e);
-        return withStatus(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
+        log.debug("Resolve Exception in @RestControllerAdvice {}", e.getMessage());
+        return switch (e) {
+            case InvalidRequestException invalid -> withStatus(HttpStatus.BAD_REQUEST.value(), invalid.getMessage());
+            default -> withStatus(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
+        };
     }
 }

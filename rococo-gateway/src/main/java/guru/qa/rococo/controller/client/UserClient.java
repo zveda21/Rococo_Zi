@@ -4,6 +4,9 @@ import guru.qa.rococo.exception.NoResponseException;
 import guru.qa.rococo.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,4 +30,23 @@ public class UserClient {
             throw new NoResponseException("No REST response in " + url, e);
         }
     }
+
+    public User update(User user) {
+        final String url = this.url + "/update";
+        try {
+
+            // todo user.avatar --> user.image
+
+            HttpEntity<User> request = new HttpEntity<>(user);
+            ResponseEntity<User> response = restTemplate.postForEntity(url, request, User.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return response.getBody();
+            } else {
+                throw new NoResponseException("No REST response in " + url);
+            }
+        } catch (Exception e) {
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
 }
