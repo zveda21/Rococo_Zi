@@ -1,6 +1,5 @@
 package guru.qa.rococo.service;
 
-import guru.qa.rococo.data.UserEntity;
 import guru.qa.rococo.data.repository.UserRepository;
 import guru.qa.rococo.domain.RococoUserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
