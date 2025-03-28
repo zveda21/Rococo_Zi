@@ -28,7 +28,7 @@ public class ArtistService {
     public @Nonnull Page<ArtistJson> getAll(@Nullable String name, @Nonnull Pageable pageable) {
         Page<ArtistEntity> artists = (name == null)
                 ? artistRepository.findAll(pageable)
-                : artistRepository.findArtistEntitiesByName(name, pageable);
+                : artistRepository.findAllByNameContainsIgnoreCase(name, pageable);
         return artists.map(ArtistJson::fromEntity);
     }
 
@@ -38,7 +38,7 @@ public class ArtistService {
                 artistRepository.findById(
                         UUID.fromString(id)
                 ).orElseThrow(
-                        () -> new NotFoundException("Художник не найден по id: " + id)
+                        () -> new NotFoundException("The artist not found by id: " + id)
                 )
         );
     }
@@ -69,7 +69,7 @@ public class ArtistService {
 
     private @Nonnull ArtistEntity getRequiredArtist(@Nonnull UUID id) {
         return artistRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Художник не найден по id: " + id)
+                () -> new NotFoundException("The artist not found by id: " + id)
         );
     }
 }
