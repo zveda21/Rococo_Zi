@@ -1,12 +1,12 @@
 package guru.qa.rococo.controller.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import guru.qa.rococo.exception.NoResponseException;
 import guru.qa.rococo.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,10 +34,20 @@ public class UserClient {
     public User update(User user) {
         final String url = this.url + "/update";
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode requestData = objectMapper.createObjectNode();
+            requestData.put("id", user.id().toString());
+            requestData.put("username", user.username());
+            requestData.put("firstname", user.firstname());
+            requestData.put("lastname", user.lastname());
+            requestData.put("image", user.avatar());
 
-            // todo user.avatar --> user.image
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> request = new HttpEntity<>(
+                    objectMapper.writeValueAsString(requestData),
+                    headers);
 
-            HttpEntity<User> request = new HttpEntity<>(user);
             ResponseEntity<User> response = restTemplate.postForEntity(url, request, User.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return response.getBody();
@@ -48,5 +58,4 @@ public class UserClient {
             throw new NoResponseException("No REST response in " + url, e);
         }
     }
-
 }
