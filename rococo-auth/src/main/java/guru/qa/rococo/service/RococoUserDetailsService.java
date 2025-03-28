@@ -20,13 +20,10 @@ public class RococoUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new RococoUserPrincipal(user);
+        return userRepository.findByUsername(username)
+                .map(RococoUserPrincipal::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Username: `" + username + "` not found"));
     }
 }
