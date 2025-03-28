@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres_zi
       POSTGRES_PASSWORD: secret
-      CREATE_DATABASES: "rococo-auth,rococo-artist,rococo-userdata"
+      CREATE_DATABASES: "rococo-auth,rococo-artist,rococo-userdata,rococo-museum"
       TZ: GMT+3
       PGTZ: GMT+3
     volumes:
