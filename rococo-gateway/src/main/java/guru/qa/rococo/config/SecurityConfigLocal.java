@@ -36,7 +36,8 @@ public class SecurityConfigLocal {
                 .authorizeHttpRequests(customizer ->
                         customizer.requestMatchers(
                                         antMatcher(HttpMethod.GET, "/api/session"),
-                                        antMatcher(HttpMethod.GET, "/api/artist/**")
+                                        antMatcher(HttpMethod.GET, "/api/artist/**"),
+                                        antMatcher(HttpMethod.GET, "/api/museum/**")
                                         )
                                 .permitAll()
                                 .anyRequest()
