@@ -54,7 +54,7 @@ spring:
   kafka:
     bootstrap-servers: 'localhost:9092'
     consumer:
-      group-id: 'userdata'
+      group-id: 'rococo-userdata'
       auto-offset-reset: earliest
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rococo-userdata'

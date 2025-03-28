@@ -41,10 +41,10 @@ logging:
     path: ./logs/rococo-auth
   level:
     root: INFO
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.boot.autoconfigure: INFO
 
 #rococo-front:
 #  base-uri: 'http://127.0.0.1:3000'
