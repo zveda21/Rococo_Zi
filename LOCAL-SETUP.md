@@ -20,3 +20,8 @@ chmod +x local-setup.sh
 ```bash
 ./local-rococo-userdata.sh
 ```
+
+- Open a new terminal and run:
+```
+./local-client.sh
+```
