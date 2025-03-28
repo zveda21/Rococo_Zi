@@ -15,4 +15,7 @@ public interface ArtistRepository extends JpaRepository<ArtistEntity, UUID> {
             "WHERE LOWER(a.name) ILIKE LOWER(CONCAT('%', :name, '%')) " +
             "ORDER BY a.name ASC")
     Page<ArtistEntity> findArtistEntitiesByName(@Param("name") String name, Pageable pageable);
+
+    Page<ArtistEntity> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }
