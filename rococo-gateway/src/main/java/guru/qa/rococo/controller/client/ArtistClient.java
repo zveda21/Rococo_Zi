@@ -24,7 +24,8 @@ public class ArtistClient {
         this.url = artistUri + "/internal/artist";
     }
 
-    public List<Artist> getAll() {
+    public List<Artist> getAll(String name) {
+        final String url = this.url + (name != null ? "?name=" + name : "");
         try {
             List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
             return ClientUtils.convertPageToTypedList(pageData, Artist.class);
