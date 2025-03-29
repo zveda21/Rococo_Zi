@@ -23,10 +23,10 @@ public class ArtistClient {
         this.url = artistUri + "/internal/artist";
     }
 
-    @SuppressWarnings("unchecked")
     public List<Artist> getAll() {
         try {
-            return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            return ClientUtils.convertPageToTypedList(pageData, Artist.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);

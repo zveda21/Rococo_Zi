@@ -1,0 +1,113 @@
+package guru.qa.rococo.controller;
+
+import guru.qa.rococo.controller.client.ArtistClient;
+import guru.qa.rococo.controller.client.MuseumClient;
+import guru.qa.rococo.controller.client.PaintingClient;
+import guru.qa.rococo.exception.InvalidRequestException;
+import guru.qa.rococo.model.Artist;
+import guru.qa.rococo.model.Museum;
+import guru.qa.rococo.model.Painting;
+import guru.qa.rococo.model.page.RestPage;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/painting")
+public class PaintingController {
+
+    private final PaintingClient paintingClient;
+    private final MuseumClient museumClient;
+    private final ArtistClient artistClient;
+
+    public PaintingController(PaintingClient paintingClient, MuseumClient museumClient, ArtistClient artistClient) {
+        this.paintingClient = paintingClient;
+        this.museumClient = museumClient;
+        this.artistClient = artistClient;
+    }
+
+    @GetMapping()
+    public Page<Painting> getAll(@RequestParam(required = false) String title) {
+        List<Painting> paintings = paintingClient.getAll(title);
+
+        List<Painting> withInfo = new ArrayList<>();
+        for (Painting painting : paintings) {
+            try {
+                withInfo.add(collectInfo(painting));
+            } catch (Exception e) {
+                log.error("Error fetching painting info for {}", painting.id());
+                withInfo.add(painting);
+            }
+        }
+
+        return new RestPage<>(withInfo);
+    }
+
+    @GetMapping("/{id}")
+    public Painting findById(@PathVariable UUID id) {
+        Painting painting = paintingClient.getById(id);
+        // get artist and museum
+        try {
+            return collectInfo(painting);
+        } catch (Exception e) {
+            log.error("Error fetching painting info for {}", painting.id());
+            return painting;
+        }
+    }
+
+    @PostMapping
+    Painting create(@RequestBody Painting painting) {
+        validatePaintingDependencies(painting);
+        try {
+            Painting created = paintingClient.create(painting);
+            return collectInfo(created);
+        } catch (Exception e) {
+            log.error("Error creating painting");
+            throw new InvalidRequestException("Artist not found");
+        }
+    }
+
+    @PatchMapping
+    Painting update(@RequestBody Painting painting) {
+        validatePaintingDependencies(painting);
+        return collectInfo(paintingClient.update(painting));
+    }
+
+    private void validatePaintingDependencies(Painting painting) {
+        // check artist
+        try {
+            var artist = artistClient.getById(painting.artist().id());
+            Objects.requireNonNull(artist);
+        } catch (Exception e) {
+            log.error("Artist {} not found", painting.artist().id());
+            throw new InvalidRequestException("Artist not found");
+        }
+
+        // check museum
+        try {
+            var museum = museumClient.getById(painting.museum().id());
+            Objects.requireNonNull(museum);
+        } catch (Exception e) {
+            log.error("Museum {} not found", painting.museum().id());
+            throw new InvalidRequestException("Museum not found");
+        }
+    }
+
+    private Painting collectInfo(Painting painting) {
+        Artist artist = painting.artistId() == null ?
+                Artist.ofEmpty() :
+                artistClient.getById(painting.artistId());
+
+        Museum museum = painting.museumId() == null ?
+                Museum.ofEmpty() :
+                museumClient.getById(painting.museumId());
+
+        return Painting.withArtistAndMuseum(painting, artist, museum);
+    }
+}
