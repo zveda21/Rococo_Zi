@@ -37,11 +37,11 @@ public class ArtistController {
 
     @PatchMapping()
     public Artist updateArtist(@RequestBody Artist artist) {
-        return artist;
+        return client.update(artist);
     }
 
     @PostMapping()
     public Artist addArtist(@RequestBody Artist artist) {
-        return artist;
+        return client.create(artist);
     }
 }
