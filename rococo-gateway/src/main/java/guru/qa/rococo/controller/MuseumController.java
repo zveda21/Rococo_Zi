@@ -20,11 +20,16 @@ public class MuseumController {
 
     @GetMapping()
     public Page<Museum> getAll(@RequestParam(required = false) String title) {
-        return new RestPage<>(client.getAll());
+        return new RestPage<>(client.getAll(title));
     }
 
     @GetMapping("/{id}")
     public Museum findByMuseumId(@PathVariable UUID id) {
         return client.getById(id);
+    }
+
+    @PatchMapping
+    Museum update(@RequestBody Museum museum) {
+        return client.update(museum);
     }
 }
