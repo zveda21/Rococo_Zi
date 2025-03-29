@@ -24,7 +24,8 @@ public class MuseumClient {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Museum> getAll() {
+    public List<Museum> getAll(String title) {
+        final String url = this.url + (title != null ? "?title=" + title : "");
         try {
             return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
         } catch (Exception e) {

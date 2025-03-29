@@ -20,7 +20,7 @@ public class MuseumController {
 
     @GetMapping()
     public Page<Museum> getAll(@RequestParam(required = false) String title) {
-        return new RestPage<>(client.getAll());
+        return new RestPage<>(client.getAll(title));
     }
 
     @GetMapping("/{id}")
