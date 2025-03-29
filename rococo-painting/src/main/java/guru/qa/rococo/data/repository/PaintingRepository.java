@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface PaintingRepository extends JpaRepository<PaintingEntity, UUID> {
     Page<PaintingEntity> findByTitleContainingIgnoreCase(Pageable pageable, String title);
+
+    Page<PaintingEntity> findByArtistId(Pageable pageable, UUID id);
 }

@@ -10,6 +10,7 @@ import guru.qa.rococo.model.Painting;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,18 +36,7 @@ public class PaintingController {
     @GetMapping()
     public Page<Painting> getAll(@RequestParam(required = false) String title) {
         List<Painting> paintings = paintingClient.getAll(title);
-
-        List<Painting> withInfo = new ArrayList<>();
-        for (Painting painting : paintings) {
-            try {
-                withInfo.add(collectInfo(painting));
-            } catch (Exception e) {
-                log.error("Error fetching painting info for {}", painting.id());
-                withInfo.add(painting);
-            }
-        }
-
-        return new RestPage<>(withInfo);
+        return new RestPage<>(collectInfo(paintings));
     }
 
     @GetMapping("/{id}")
@@ -59,6 +49,12 @@ public class PaintingController {
             log.error("Error fetching painting info for {}", painting.id());
             return painting;
         }
+    }
+
+    @GetMapping("/author/{id}")
+    public Page<Painting> getByAuthor(@PathVariable UUID id) {
+        List<Painting> paintings = paintingClient.getByArtist(id);
+        return new PageImpl<>(collectInfo(paintings));
     }
 
     @PostMapping
@@ -97,6 +93,20 @@ public class PaintingController {
             log.error("Museum {} not found", painting.museum().id());
             throw new InvalidRequestException("Museum not found");
         }
+    }
+
+    private List<Painting> collectInfo(List<Painting> paintings) {
+        List<Painting> withInfo = new ArrayList<>();
+        for (Painting painting : paintings) {
+            try {
+                withInfo.add(collectInfo(painting));
+            } catch (Exception e) {
+                log.error("Error fetching painting info for {}", painting.id());
+                withInfo.add(painting);
+            }
+        }
+
+        return withInfo;
     }
 
     private Painting collectInfo(Painting painting) {

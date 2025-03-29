@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,6 +40,18 @@ public class PaintingClient {
         final String url = this.url + "/" + id.toString();
         try {
             return restTemplate.getForEntity(url, Painting.class).getBody();
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
+    public List<Painting> getByArtist(UUID id) {
+        Objects.requireNonNull(id);
+        final String url = this.url + "/artist/" + id;
+        try {
+            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            return ClientUtils.convertPageToTypedList(pageData, Painting.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);

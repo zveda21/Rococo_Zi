@@ -37,6 +37,11 @@ public class PaintingController {
         return service.findByPaintingId(id);
     }
 
+    @GetMapping("/artist/{id}")
+    public Page<Painting> getByArtistId(Pageable pageable, @PathVariable UUID id) {
+        return service.findByArtistId(id, pageable);
+    }
+
     @PostMapping
     public Painting create(@RequestBody Painting painting) {
         return service.create(painting);

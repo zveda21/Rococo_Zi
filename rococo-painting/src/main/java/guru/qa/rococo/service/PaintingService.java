@@ -37,6 +37,12 @@ public class PaintingService {
         return optional.map(Painting::ofEntity).orElseThrow(RuntimeException::new);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Painting> findByArtistId(UUID id, Pageable pageable) {
+        Page<PaintingEntity> entities = repository.findByArtistId(pageable, id);
+        return entities.map(Painting::ofEntity);
+    }
+
     @Transactional
     public Painting update(Painting painting) {
         validateFields(painting);
