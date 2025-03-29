@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistController {
