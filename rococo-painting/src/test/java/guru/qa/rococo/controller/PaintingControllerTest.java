@@ -55,6 +55,19 @@ public class PaintingControllerTest {
     }
 
     @Test
+    @Sql("/insertPaintings.sql")
+    void shouldReturnPaintingByArtistId() throws Exception {
+        String artistId = "ea495336-3a32-4151-9cd4-aa118ca8ecba";
+
+        mockMvc.perform(get("/internal/painting/artist/{id}", artistId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].title").value("Starry Night"))
+                .andExpect(jsonPath("$.content[0].description").value("A painting by Vincent van Gogh."))
+                .andExpect(jsonPath("$.content[0].content").value("iVBORw0KGgoAAAANSUhEUgAA..."));
+    }
+
+    @Test
     void shouldReturnNotFoundPaintingById() throws Exception {
         String paintingId = UUID.randomUUID().toString();
 
