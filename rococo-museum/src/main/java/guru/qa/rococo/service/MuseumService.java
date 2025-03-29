@@ -4,7 +4,7 @@ import guru.qa.rococo.data.GeoEntity;
 import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.GeoRepository;
 import guru.qa.rococo.data.repository.MuseumRepository;
-import guru.qa.rococo.exception.NotFondException;
+import guru.qa.rococo.exception.NotFoundException;
 import guru.qa.rococo.model.Museum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +40,21 @@ public class MuseumService {
     @Transactional(readOnly = true)
     public Museum findByMuseumId(UUID id) {
         Optional<MuseumEntity> entity = museumRepository.findById(id);
-        return entity.map(Museum::ofEntity).orElseThrow(NotFondException::new);
+        return entity.map(Museum::ofEntity).orElseThrow(() -> new NotFoundException("Museum not found " + id));
     }
 
     @Transactional
     public Museum update(Museum museum) {
         Optional<MuseumEntity> find = museumRepository.findById(museum.id());
         if (find.isEmpty()) {
-            throw new NotFondException("Museum " + museum.id() + " not found");
+            throw new NotFoundException("Museum not found " + museum.id());
         }
 
         // todo validation
         final var city = museum.geo().city();
         Optional<GeoEntity> findGeo = geoRepository.findByCityIgnoreCase(city);
         if (findGeo.isEmpty()) {
-            throw new NotFondException("Location with city name " + city + " not found");
+            throw new NotFoundException("Location with city name " + city + " not found");
         }
 
         MuseumEntity entity = find.get();
