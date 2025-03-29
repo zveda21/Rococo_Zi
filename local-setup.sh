@@ -2,9 +2,11 @@
 
 chmod +x postgres/script/init-database.sh
 
-docker volume rm rococo_zi_pgdata
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
+
+docker volume rm rococo_zi_pgdata
+
 docker compose up -d
 
 gradle build bootJar
