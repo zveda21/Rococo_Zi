@@ -24,11 +24,11 @@ public class MuseumClient {
         this.restTemplate = restTemplate;
     }
 
-    @SuppressWarnings("unchecked")
     public List<Museum> getAll(String title) {
         final String url = this.url + (title != null ? "?title=" + title : "");
         try {
-            return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            return ClientUtils.convertPageToTypedList(pageData, Museum.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);

@@ -43,6 +43,7 @@ public class MuseumService {
         return entity.map(Museum::ofEntity).orElseThrow(NotFondException::new);
     }
 
+    @Transactional
     public Museum update(Museum museum) {
         Optional<MuseumEntity> find = museumRepository.findById(museum.id());
         if (find.isEmpty()) {

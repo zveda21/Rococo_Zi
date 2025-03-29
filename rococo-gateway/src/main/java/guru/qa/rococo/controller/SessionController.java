@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Objects;
 
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/session")
 public class SessionController {

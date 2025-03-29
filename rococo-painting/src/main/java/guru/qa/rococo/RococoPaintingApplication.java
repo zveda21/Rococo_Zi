@@ -1,7 +1,7 @@
 package guru.qa.rococo;
 
-import guru.qa.rococo.data.MuseumEntity;
-import guru.qa.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.data.PaintingEntity;
+import guru.qa.rococo.data.repository.PaintingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.utils.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +19,24 @@ import java.nio.file.Paths;
 
 @Slf4j
 @SpringBootApplication
-public class RococoMuseumApplication {
+public class RococoPaintingApplication {
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(RococoMuseumApplication.class);
-        springApplication.run(args);
+        SpringApplication application = new SpringApplication(RococoPaintingApplication.class);
+        application.run(args);
     }
 
     @Autowired
-    MuseumRepository repository;
-
+    private PaintingRepository repository;
     @Bean
-    public CommandLineRunner updateMuseumPhoto() {
+    public CommandLineRunner updateImages() {
         return args -> {
-            var museum = repository.findAll();
             final int images = 3;
             int index = 0;
-            for (MuseumEntity entity : museum) {
-
+            var allPaintings = repository.findAll();
+            for (PaintingEntity painting : allPaintings) {
                 try {
-                    String file = "images/museum-" + index + ".jpeg";
-                    URL resource = RococoMuseumApplication.class.getClassLoader().getResource(file);
+                    String file = "images/art-" + index + ".jpeg";
+                    URL resource = RococoPaintingApplication.class.getClassLoader().getResource(file);
                     if (resource == null) {
                         throw new IllegalArgumentException("File not found " + file);
                     }
@@ -49,9 +47,8 @@ public class RococoMuseumApplication {
                     String base64 = Base64.encodeBase64String(bytes);
                     String content = "data:image/jpeg;base64," + base64;
 
-                    entity.setPhoto(content.getBytes(StandardCharsets.UTF_8));
-                    repository.save(entity);
-
+                    painting.setContent(content.getBytes(StandardCharsets.UTF_8));
+                    repository.save(painting);
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }

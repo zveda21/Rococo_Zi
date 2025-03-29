@@ -10,6 +10,9 @@ rococo-artist:
 rococo-museum:
   base-uri: 'http://127.0.0.1:8383'
 
+rococo-painting:
+  base-uri: 'http://127.0.0.1:8484'
+
 rococo-userdata:
   base-uri: 'http://127.0.0.1:8089'
 

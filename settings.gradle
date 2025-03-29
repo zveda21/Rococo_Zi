@@ -4,4 +4,5 @@ include 'rococo-auth'
 include 'rococo-artist'
 include 'rococo-userdata'
 include 'rococo-museum'
+include 'rococo-painting'
 

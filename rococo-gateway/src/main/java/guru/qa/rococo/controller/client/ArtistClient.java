@@ -5,6 +5,7 @@ import guru.qa.rococo.model.Artist;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,10 +24,11 @@ public class ArtistClient {
         this.url = artistUri + "/internal/artist";
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Artist> getAll() {
+    public List<Artist> getAll(String name) {
+        final String url = this.url + (name != null ? "?name=" + name : "");
         try {
-            return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+            return ClientUtils.convertPageToTypedList(pageData, Artist.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);
@@ -37,6 +39,24 @@ public class ArtistClient {
         final String url = this.url + "/" + id.toString();
         try {
             return restTemplate.getForEntity(url, Artist.class).getBody();
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
+    public Artist create(Artist artist) {
+        try {
+            return restTemplate.postForObject(url, new HttpEntity<>(artist), Artist.class);
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
+    public Artist update(Artist artist) {
+        try {
+            return restTemplate.patchForObject(url, new HttpEntity<Artist>(artist), Artist.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);
