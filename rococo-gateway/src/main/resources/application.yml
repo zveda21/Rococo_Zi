@@ -75,7 +75,7 @@ rococo-artist:
   base-uri: 'http://artist.rococo.dc:8282'
 rococo-museum:
   base-uri: 'http://museum.rococo.dc:8283'
-#rococo-painting:
-#  base-uri: 'http://painting.rococo.dc:8284'
+rococo-painting:
+  base-uri: 'http://painting.rococo.dc:8484'
 rococo-gateway:
   base-uri: 'http://gateway.rococo.dc:8080'
