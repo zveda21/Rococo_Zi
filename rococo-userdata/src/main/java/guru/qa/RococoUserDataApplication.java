@@ -19,7 +19,6 @@ public class RococoUserDataApplication {
 
     }
 
-
     @Bean
     public CommandLineRunner checkArtists() {
         return args -> {
