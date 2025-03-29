@@ -21,6 +21,12 @@ public class MuseumEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private String description;
+
+    @Column(columnDefinition = "bytea", nullable = false)
+    private byte[] photo;
+
     @ManyToOne
     private GeoEntity geo;
 

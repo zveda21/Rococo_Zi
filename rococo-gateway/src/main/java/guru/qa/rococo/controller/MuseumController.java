@@ -4,10 +4,9 @@ import guru.qa.rococo.controller.client.MuseumClient;
 import guru.qa.rococo.model.Museum;
 import guru.qa.rococo.model.page.RestPage;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/museum")
@@ -22,5 +21,10 @@ public class MuseumController {
     @GetMapping()
     public Page<Museum> getAll(@RequestParam(required = false) String title) {
         return new RestPage<>(client.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public Museum findByMuseumId(@PathVariable UUID id) {
+        return client.getById(id);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -26,6 +27,16 @@ public class MuseumClient {
     public List<Museum> getAll() {
         try {
             return Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
+    public Museum getById(UUID id) {
+        final String url = this.url + "/" + id.toString();
+        try {
+            return restTemplate.getForEntity(url, Museum.class).getBody();
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);
