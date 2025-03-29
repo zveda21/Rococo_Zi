@@ -5,6 +5,7 @@ import guru.qa.rococo.model.Museum;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,6 +39,16 @@ public class MuseumClient {
         final String url = this.url + "/" + id.toString();
         try {
             return restTemplate.getForEntity(url, Museum.class).getBody();
+        } catch (Exception e) {
+            log.error("Error {}", e.getMessage(), e);
+            throw new NoResponseException("No REST response in " + url, e);
+        }
+    }
+
+    public Museum update(Museum museum) {
+        try {
+            HttpEntity<Museum> request = new HttpEntity<>(museum);
+            return restTemplate.patchForObject(url, request, Museum.class);
         } catch (Exception e) {
             log.error("Error {}", e.getMessage(), e);
             throw new NoResponseException("No REST response in " + url, e);

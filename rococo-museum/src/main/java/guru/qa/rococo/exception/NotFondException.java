@@ -6,4 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class NotFondException extends RuntimeException {
+    public NotFondException(String message) {
+        super(message);
+    }
 }

@@ -27,4 +27,9 @@ public class MuseumController {
     public Museum findByMuseumId(@PathVariable UUID id) {
         return client.getById(id);
     }
+
+    @PatchMapping
+    Museum update(@RequestBody Museum museum) {
+        return client.update(museum);
+    }
 }
