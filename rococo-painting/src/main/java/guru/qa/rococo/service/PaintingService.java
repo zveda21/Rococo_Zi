@@ -2,6 +2,7 @@ package guru.qa.rococo.service;
 
 import guru.qa.rococo.data.PaintingEntity;
 import guru.qa.rococo.data.repository.PaintingRepository;
+import guru.qa.rococo.exception.NotFoundException;
 import guru.qa.rococo.model.Painting;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ public class PaintingService {
     @Transactional(readOnly = true)
     public Painting findByPaintingId(UUID id) {
         Optional<PaintingEntity> optional = repository.findById(id);
-        return optional.map(Painting::ofEntity).orElseThrow(RuntimeException::new);
+        return optional.map(Painting::ofEntity).orElseThrow(() -> new NotFoundException("Painting not found with id " + id));
     }
 
     @Transactional(readOnly = true)
