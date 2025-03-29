@@ -26,6 +26,9 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
     runtimeOnly "org.postgresql:postgresql:${project.ext.postgresDriverVersion}"
 
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "com.h2database:h2:${project.ext.h2Version}"
+
 }
 
 jib {
@@ -38,7 +41,7 @@ jib {
         ]
         creationTime = 'USE_CURRENT_TIMESTAMP'
         labels = [
-                'maintainer': 'Dmitrii Tuchs @dtuchs',
+                'maintainer': 'Zi_Yan',
                 'version'   : "${project.version}".toString()
         ]
     }
