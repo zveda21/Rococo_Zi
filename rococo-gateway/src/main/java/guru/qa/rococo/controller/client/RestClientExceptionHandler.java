@@ -9,6 +9,7 @@ import org.springframework.web.client.RestClientException;
 
 @Aspect
 @Component
+@SuppressWarnings("unused")
 public class RestClientExceptionHandler {
     @Around("execution(* guru.qa.rococo.controller.client..*(..))")
     public Object handleRestClientException(ProceedingJoinPoint joinPoint) throws Throwable {

@@ -1,6 +1,5 @@
 package guru.qa.rococo.controller.client;
 
-import guru.qa.rococo.exception.RemoteServerException;
 import guru.qa.rococo.model.Museum;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;

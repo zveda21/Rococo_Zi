@@ -1,0 +1,47 @@
+{
+  "content": [
+    {
+      "id": "Constants.Artist.ID_1",
+      "name": "Vincent Vah Gogh",
+      "biography": "Vincent van Gogh was a Dutch post-impressionist painter who is among the most famous and influential figures in the history of Western art.",
+      "photo": "data:image/jpeg;base64,..."
+    },
+    {
+      "id": "Constants.Artist.ID_2",
+      "name": "Pablo Picasso",
+      "biography": "Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer who is widely regarded as one of the most influential artists of the 20th century.",
+      "photo": "data:image/jpeg;base64,..."
+    },
+    {
+      "id": "Constants.Artist.ID_3",
+      "name": "Leonardo da Vinci",
+      "biography": "Leonardo da Vinci was an Italian polymath of the High Renaissance who is widely considered one of the greatest painters of all time.",
+      "photo": "data:image/jpeg;base64,..."
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 3,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 3,
+  "number": 0,
+  "first": true,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "size": 3,
+  "numberOfElements": 3,
+  "empty": false
+}

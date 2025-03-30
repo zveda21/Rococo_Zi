@@ -1,0 +1,8 @@
+{
+  "id": "Constants.Painting.ID_1",
+  "title": "Starry Night",
+  "description": "A painting by Vincent van Gogh, depicting a starry night sky over a small town.",
+  "content": "data:image/jpeg;base64,...",
+  "artistId": "Constants.Artist.ID_1",
+  "museumId": "Constants.Museum.ID_1"
+}

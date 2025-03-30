@@ -39,6 +39,6 @@ public class ArtistClient {
     }
 
     public Artist update(Artist artist) {
-        return restTemplate.patchForObject(url, new HttpEntity<Artist>(artist), Artist.class);
+        return restTemplate.patchForObject(url, new HttpEntity<>(artist), Artist.class);
     }
 }

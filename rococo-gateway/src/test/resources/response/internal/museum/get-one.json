@@ -1,0 +1,13 @@
+{
+  "id": "Constants.Museum.ID_1",
+  "title": "Museum of Modern Art",
+  "description": "A museum dedicated to modern art.",
+  "photo": "data:image/jpeg;base64,...",
+  "geo": {
+    "city": "New York",
+    "country": {
+      "id": "11ee622c-cef6-ab30-8e63-0242ac110002",
+      "name": "United States"
+    }
+  }
+}
