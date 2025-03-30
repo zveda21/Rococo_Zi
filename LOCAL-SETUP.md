@@ -8,20 +8,6 @@ chmod +x local-setup.sh
 
 - Open a new terminal and run:
 ```bash
-./local-rococo-artist.sh
-```
-
-- Open a new terminal and run:
-```bash
-./local-rococo-gateway.sh
-```
-
-- Open a new terminal and run:
-```bash
-./local-rococo-userdata.sh
-```
-
-- Open a new terminal and run:
-```
-./local-client.sh
+chmod +x local-all.sh
+./local-all.sh
 ```

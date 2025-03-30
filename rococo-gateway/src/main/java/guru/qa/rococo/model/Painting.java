@@ -15,8 +15,6 @@ public record Painting(
         UUID museumId,
         Museum museum) {
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
     public static Painting withArtistAndMuseum(Painting painting, Artist artist, Museum museum) {
         return new Painting(
                 painting.id(),
