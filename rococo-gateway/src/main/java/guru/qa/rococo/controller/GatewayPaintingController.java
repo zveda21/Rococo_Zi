@@ -22,13 +22,13 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/painting")
-public class PaintingController {
+public class GatewayPaintingController {
 
     private final PaintingClient paintingClient;
     private final MuseumClient museumClient;
     private final ArtistClient artistClient;
 
-    public PaintingController(PaintingClient paintingClient, MuseumClient museumClient, ArtistClient artistClient) {
+    public GatewayPaintingController(PaintingClient paintingClient, MuseumClient museumClient, ArtistClient artistClient) {
         this.paintingClient = paintingClient;
         this.museumClient = museumClient;
         this.artistClient = artistClient;
@@ -82,7 +82,6 @@ public class PaintingController {
             var artist = artistClient.getById(painting.artist().id());
             Objects.requireNonNull(artist);
         } catch (Exception e) {
-            log.error("Artist {} not found", painting.artist().id());
             throw new InvalidRequestException("Artist not found");
         }
 
@@ -91,7 +90,6 @@ public class PaintingController {
             var museum = museumClient.getById(painting.museum().id());
             Objects.requireNonNull(museum);
         } catch (Exception e) {
-            log.error("Museum {} not found", painting.museum().id());
             throw new InvalidRequestException("Museum not found");
         }
     }
