@@ -1,12 +1,15 @@
 package guru.qa.rococo.controller.client;
 
-import guru.qa.rococo.exception.NoResponseException;
+import guru.qa.rococo.exception.RemoteServerException;
 import guru.qa.rococo.model.Painting;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -26,54 +29,29 @@ public class PaintingClient {
     }
 
     public List<Painting> getAll(String title) {
-        final String url = this.url + (title != null ? "?title=" + title : "");
-        try {
-            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
-            return ClientUtils.convertPageToTypedList(pageData, Painting.class);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+        return ClientUtils.convertPageToTypedList(pageData, Painting.class);
     }
 
     public Painting getById(UUID id) {
         final String url = this.url + "/" + id.toString();
-        try {
-            return restTemplate.getForEntity(url, Painting.class).getBody();
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        return restTemplate.getForEntity(url, Painting.class).getBody();
     }
 
     public List<Painting> getByArtist(UUID id) {
         Objects.requireNonNull(id);
         final String url = this.url + "/artist/" + id;
-        try {
-            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
-            return ClientUtils.convertPageToTypedList(pageData, Painting.class);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+        return ClientUtils.convertPageToTypedList(pageData, Painting.class);
     }
 
     public Painting update(Painting painting) {
-        try {
-            return restTemplate.patchForObject(url, getHttpEntity(painting), Painting.class);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        return restTemplate.patchForObject(url, getHttpEntity(painting), Painting.class);
     }
 
     public Painting create(Painting painting) {
-        try {
-            return restTemplate.postForEntity(url, getHttpEntity(painting), Painting.class).getBody();
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        return restTemplate.postForEntity(url, getHttpEntity(painting), Painting.class).getBody();
+
     }
 
     private HttpEntity<Painting> getHttpEntity(Painting painting) {

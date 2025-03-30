@@ -1,6 +1,6 @@
 package guru.qa.rococo.controller.client;
 
-import guru.qa.rococo.exception.NoResponseException;
+import guru.qa.rococo.exception.RemoteServerException;
 import guru.qa.rococo.model.Museum;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
@@ -26,32 +26,18 @@ public class MuseumClient {
 
     public List<Museum> getAll(String title) {
         final String url = this.url + (title != null ? "?title=" + title : "");
-        try {
-            List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
-            return ClientUtils.convertPageToTypedList(pageData, Museum.class);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
+        return ClientUtils.convertPageToTypedList(pageData, Museum.class);
     }
 
     public Museum getById(UUID id) {
         final String url = this.url + "/" + id.toString();
-        try {
-            return restTemplate.getForEntity(url, Museum.class).getBody();
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        return restTemplate.getForEntity(url, Museum.class).getBody();
+
     }
 
     public Museum update(Museum museum) {
-        try {
-            HttpEntity<Museum> request = new HttpEntity<>(museum);
-            return restTemplate.patchForObject(url, request, Museum.class);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        HttpEntity<Museum> request = new HttpEntity<>(museum);
+        return restTemplate.patchForObject(url, request, Museum.class);
     }
 }

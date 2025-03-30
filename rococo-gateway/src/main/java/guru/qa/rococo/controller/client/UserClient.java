@@ -1,8 +1,8 @@
 package guru.qa.rococo.controller.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import guru.qa.rococo.exception.NoResponseException;
 import guru.qa.rococo.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,12 +23,7 @@ public class UserClient {
 
     public User getByUsername(String username) {
         final String url = this.url + "/current?username=" + username;
-        try {
-            return restTemplate.getForEntity(url, User.class).getBody();
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage(), e);
-            throw new NoResponseException("No REST response in " + url, e);
-        }
+        return restTemplate.getForEntity(url, User.class).getBody();
     }
 
     public User update(User user) {
@@ -49,13 +44,9 @@ public class UserClient {
                     headers);
 
             ResponseEntity<User> response = restTemplate.postForEntity(url, request, User.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                return response.getBody();
-            } else {
-                throw new NoResponseException("No REST response in " + url);
-            }
-        } catch (Exception e) {
-            throw new NoResponseException("No REST response in " + url, e);
+            return response.getBody();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

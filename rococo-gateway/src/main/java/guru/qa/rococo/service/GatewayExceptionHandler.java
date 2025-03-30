@@ -1,6 +1,7 @@
 package guru.qa.rococo.service;
 
 import guru.qa.rococo.exception.InvalidRequestException;
+import guru.qa.rococo.exception.RemoteServerException;
 import guru.qa.rococo.model.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,13 @@ public class GatewayExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleApiNoResponseException(RuntimeException e, HttpServletRequest request) {
-        log.debug("Resolve Exception in @RestControllerAdvice {}", e.getMessage());
+    public ResponseEntity<ErrorResponse> handleApiErrorResponse(RuntimeException e, HttpServletRequest request) {
         return switch (e) {
             case InvalidRequestException invalid -> withStatus(HttpStatus.BAD_REQUEST.value(), invalid.getMessage());
+            case RemoteServerException remoteServerException -> {
+                log.error("Remote server exception", remoteServerException.getCause());
+                yield withStatus(remoteServerException.getStatus().value(), remoteServerException.getMessage());
+            }
             default -> withStatus(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
         };
     }
