@@ -1,25 +1,25 @@
 package qa.guru.rococo.config;
 
-enum LocalConfig implements Config {
+enum DockerConfig implements Config {
     INSTANCE;
 
     @Override
     public String profile() {
-        return "local";
+        return "docker";
     }
 
     @Override
     public String frontUrl() {
-        return "http://127.0.0.1:3000/";
+        return "http://frontend.rococo.dc/";
     }
 
     @Override
     public String gatewayUrl() {
-        return "http://127.0.0.1:8080/";
+        return "http://gateway.rococo.dc:8080/";
     }
 
     @Override
     public String authUrl() {
-        return "http://127.0.0.1:9000/";
+        return "http://auth.rococo.dc:9000/";
     }
 }

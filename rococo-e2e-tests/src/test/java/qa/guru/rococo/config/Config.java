@@ -5,8 +5,14 @@ import java.util.Objects;
 public interface Config {
 
     static Config getInstance() {
+        if (DockerConfig.INSTANCE.profile().equals(EnvVars.PROFILE.get())) {
+            return DockerConfig.INSTANCE;
+        }
+
         return LocalConfig.INSTANCE;
     }
+
+    String profile();
 
     String frontUrl();
 
