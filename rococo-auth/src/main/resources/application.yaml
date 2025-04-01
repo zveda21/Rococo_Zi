@@ -7,10 +7,6 @@ spring:
   mvc:
     log-request-details: true
   datasource:
-#    url: 'jdbc:postgresql://127.0.0.1:5432/rococo-auth'
-#    driver-class-name: org.postgresql.Driver
-#    username: postgres_zi
-#    password: secret
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -45,11 +41,6 @@ logging:
     org.springframework.security: INFO
     org.springframework.security.oauth2: INFO
     org.springframework.boot.autoconfigure: INFO
-
-#rococo-front:
-#  base-uri: 'http://127.0.0.1:3000'
-#rococo-auth:
-#  base-uri: 'http://127.0.0.1:9000'
 ---
 spring:
   config:

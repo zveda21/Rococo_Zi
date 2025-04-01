@@ -17,6 +17,11 @@ services:
     command: ["postgres", "-c", "max_prepared_transactions=100"]
     networks:
       - rococo-network
+    healthcheck:
+      test: [ "CMD", "pg_isready" , "-U", "postgres_zi"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2
@@ -58,8 +63,10 @@ services:
       - "9000:9000"
     restart: always
     depends_on:
-      - rococo-all-db
-      - kafka
+      rococo-all-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     networks:
       - rococo-network
 
@@ -69,10 +76,16 @@ services:
     ports:
       - "8089:8089"
     depends_on:
-      - rococo-all-db
-      - kafka
+      rococo-all-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      auth.rococo.dc:
+        condition: service_started
     networks:
       - rococo-network
+    healthcheck:
+      test: "wget --spider http://localhost:8089/actuator/health || exit 1"
 
   artist.rococo.dc:
     image: zveda044/rococo-artist-docker:latest
@@ -80,9 +93,12 @@ services:
     ports:
       - "8282:8282"
     depends_on:
-      - rococo-all-db
+      rococo-all-db:
+        condition: service_healthy
     networks:
       - rococo-network
+    healthcheck:
+      test: "wget --spider http://localhost:8282/actuator/health || exit 1"
 
   museum.rococo.dc:
     image: zveda044/rococo-museum-docker:latest
@@ -90,9 +106,12 @@ services:
     ports:
       - "8383:8383"
     depends_on:
-      - rococo-all-db
+      rococo-all-db:
+        condition: service_healthy
     networks:
       - rococo-network
+    healthcheck:
+      test: "wget --spider http://localhost:8383/actuator/health || exit 1"
 
   painting.rococo.dc:
     image: zveda044/rococo-painting-docker:latest
@@ -100,9 +119,12 @@ services:
     ports:
       - "8484:8484"
     depends_on:
-      - rococo-all-db
+      rococo-all-db:
+        condition: service_healthy
     networks:
       - rococo-network
+    healthcheck:
+      test: "wget --spider http://localhost:8484/actuator/health || exit 1"
 
   gateway.rococo.dc:
     image: zveda044/rococo-gateway-docker:latest
@@ -110,7 +132,16 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - auth.rococo.dc
+      auth.rococo.dc:
+        condition: service_started
+      userdata.rococo.dc:
+        condition: service_started
+      artist.rococo.dc:
+        condition: service_started
+      museum.rococo.dc:
+        condition: service_started
+      painting.rococo.dc:
+        condition: service_started
     networks:
       - rococo-network
 
@@ -123,7 +154,8 @@ services:
     ports:
       - 80:80
     depends_on:
-      - gateway.rococo.dc
+      gateway.rococo.dc:
+        condition: service_started
     networks:
       - rococo-network
 
