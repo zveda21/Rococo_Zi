@@ -87,7 +87,7 @@ rococo-museum:
 rococo-painting:
   base-uri: 'http://painting.rococo.dc:8484'
 rococo-userdata:
-  base-uri: 'http:/userdata.rococo.dc:8089'
+  base-uri: 'http://userdata.rococo.dc:8089'
 rococo-front:
-  base-uri: 'http://rococo.client.dc'
+  base-uri: 'http://frontend.rococo.dc'
 
