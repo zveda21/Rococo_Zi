@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -72,11 +73,11 @@ class GatewayPaintingControllerTest {
 
     @Test
     void testGetAll() {
-        when(paintingClient.getAll(null)).thenReturn(List.of(painting));
-        Page<Painting> result = gatewayPaintingController.getAll(null);
+        when(paintingClient.getAll(Pageable.ofSize(10), null)).thenReturn(List.of(painting));
+        Page<Painting> result = gatewayPaintingController.getAll(Pageable.ofSize(10), null);
         assertFalse(result.isEmpty());
         assertEquals(1, result.getTotalElements());
-        verify(paintingClient).getAll(null);
+        verify(paintingClient).getAll(Pageable.ofSize(10), null);
     }
 
     @Test

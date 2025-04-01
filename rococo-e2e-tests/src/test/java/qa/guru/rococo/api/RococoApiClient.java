@@ -10,6 +10,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RococoApiClient {
+    private static final int DEFAULT_PAGE = 0;
+    private static final int DEFAULT_PAGE_SIZE = 100;
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Config.getInstance().gatewayUrl())
             .addConverterFactory(JacksonConverterFactory.create())
@@ -19,7 +21,7 @@ public class RococoApiClient {
 
     @SneakyThrows
     public Page<Artist> getArtists(String bearerToken) {
-        return rococoApi.getArtists(bearerToken).execute().body();
+        return rococoApi.getArtists(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
     }
 
     @SneakyThrows
@@ -44,11 +46,16 @@ public class RococoApiClient {
 
     @SneakyThrows
     public Page<Museum> getMuseums(String bearerToken) {
-        return rococoApi.getMuseums(bearerToken).execute().body();
+        return rococoApi.getMuseums(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
     }
 
     @SneakyThrows
     public Museum getMuseumById(String bearerToken, String id) {
         return rococoApi.getMuseumById(bearerToken, id).execute().body();
+    }
+
+    @SneakyThrows
+    public Museum createMuseum(String bearerToken, Museum museum) {
+        return rococoApi.createMuseum(bearerToken, museum).execute().body();
     }
 }

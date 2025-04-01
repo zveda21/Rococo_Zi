@@ -4,6 +4,7 @@ import guru.qa.rococo.controller.client.ArtistClient;
 import guru.qa.rococo.model.Artist;
 import guru.qa.rococo.model.page.RestPage;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -20,8 +21,8 @@ public class ArtistController {
     }
 
     @GetMapping()
-    public Page<Artist> getAll(@RequestParam(required = false) String name) {
-        return new RestPage<>(client.getAll(name));
+    public Page<Artist> getAll(Pageable pageable, @RequestParam(required = false) String name) {
+        return new RestPage<>(client.getAll(pageable, name));
     }
 
     @GetMapping("/{id}")

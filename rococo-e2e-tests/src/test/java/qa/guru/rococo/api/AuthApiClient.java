@@ -5,6 +5,7 @@ import io.qameta.allure.okhttp3.AllureOkHttp3;
 import lombok.SneakyThrows;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import qa.guru.rococo.config.Config;
 import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
 import qa.guru.rococo.utils.OAuthUtils;
@@ -30,7 +31,7 @@ public class AuthApiClient {
                 .followRedirects(true);
         builder.addNetworkInterceptor(new CodeInterceptor());
         builder.addInterceptor(new okhttp3.logging.HttpLoggingInterceptor()
-                .setLevel(okhttp3.logging.HttpLoggingInterceptor.Level.BODY));
+                .setLevel(HttpLoggingInterceptor.Level.HEADERS));
         builder.addNetworkInterceptor(new AllureOkHttp3());
         builder.cookieJar(
                 new JavaNetCookieJar(

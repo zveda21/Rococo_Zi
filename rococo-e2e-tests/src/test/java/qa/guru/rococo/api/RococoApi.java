@@ -10,7 +10,9 @@ import retrofit2.http.*;
 public interface RococoApi {
     @GET("api/artist")
     Call<RestPage<Artist>> getArtists(
-            @Header("Authorization") String bearerToken);
+            @Header("Authorization") String bearerToken,
+            @Query("page") int page,
+            @Query("size") int size);
 
     @GET("api/artist/{id}")
     Call<Artist> getArtistById(
@@ -24,12 +26,19 @@ public interface RococoApi {
 
     @GET("api/museum")
     Call<RestPage<Museum>> getMuseums(
-            @Header("Authorization") String bearerToken);
+            @Header("Authorization") String bearerToken,
+            @Query("page") int page,
+            @Query("size") int size);
 
     @GET("api/museum/{id}")
     Call<Museum> getMuseumById(
             @Header("Authorization") String bearerToken,
             @Path("id") String id);
+
+    @POST("api/museum")
+    Call<Museum> createMuseum(
+            @Header("Authorization") String bearerToken,
+            @Body Museum museum);
 
     @GET("api/painting")
     Call<RestPage<Painting>> getPaintings(
@@ -39,4 +48,9 @@ public interface RococoApi {
     Call<Painting> getPaintingById(
             @Header("Authorization") String bearerToken,
             @Path("id") String id);
+
+    @POST("api/painting")
+    Call<Painting> createPainting(
+            @Header("Authorization") String bearerToken,
+            @Body Painting painting);
 }

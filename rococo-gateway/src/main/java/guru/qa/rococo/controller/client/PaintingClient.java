@@ -4,6 +4,7 @@ import guru.qa.rococo.model.Painting;
 import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +25,13 @@ public class PaintingClient {
         this.restTemplate = restTemplate;
     }
 
-    public List<Painting> getAll(String title) {
+    public List<Painting> getAll(Pageable pageable, String title) {
+        Objects.requireNonNull(pageable, "Pageable cannot be null");
+        String url = this.url + "?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
+        if (title != null && !title.isBlank()) {
+            url += "&title=" + title;
+        }
+
         List<?> pageData = Optional.ofNullable(restTemplate.getForEntity(url, RestPage.class).getBody()).map(RestPage::getContent).orElse(List.of());
         return ClientUtils.convertPageToTypedList(pageData, Painting.class);
     }

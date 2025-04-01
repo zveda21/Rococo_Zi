@@ -1,7 +1,6 @@
 package qa.guru.rococo.test;
 
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +14,13 @@ import qa.guru.rococo.jupiter.annotation.extension.TestMethodContextExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
 import qa.guru.rococo.model.rest.Artist;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @RestTest
-public class ArtistApiTest {
+public class ArtistRestApiTest {
 
     @RegisterExtension
+    @SuppressWarnings("unused")
     private static final ApiLoginExtension apiLoginExtension = ApiLoginExtension.rest();
 
     private static RococoApiClient client;
@@ -33,18 +35,27 @@ public class ArtistApiTest {
     @Test
     @ApiLogin
     @ExtendWith(TestMethodContextExtension.class)
-    void getArtists(@Token String token) {
-        Page<Artist> artists = client.getArtists(token);
-        Assertions.assertNotNull(artists);
-        Assertions.assertFalse(artists.isEmpty());
-    }
+    void artistApiTest(@Token String token) {
+        final String name = faker.name().fullName();
+        var artist = new Artist(null, name, faker.lorem().sentence(), "");
+        var createdArtist = client.createArtist(token, artist);
+        assertNotNull(
+                createdArtist.id(),
+                "Created artist ID should not be null");
 
-    @Test
-    @ApiLogin
-    @ExtendWith(TestMethodContextExtension.class)
-    void createArtist(@Token String token) {
-        Artist artist = new Artist(null, faker.name().fullName(), faker.lorem().sentence(), "");
-        artist = client.createArtist(token, artist);
-        Assertions.assertNotNull(artist.id());
+        Page<Artist> artists = client.getArtists(token);
+        assertNotNull(artists);
+        assertFalse(artists.isEmpty());
+        assertTrue(
+                artists.getContent().stream().anyMatch(a -> a.id().equals(createdArtist.id())),
+                "Created artist should be in the list");
+
+        var id = createdArtist.id().toString();
+        artist = client.getArtistById(token, id);
+        assertNotNull(artist);
+        assertEquals(
+                createdArtist.name(),
+                artist.name(),
+                "Artist name should be the same");
     }
 }

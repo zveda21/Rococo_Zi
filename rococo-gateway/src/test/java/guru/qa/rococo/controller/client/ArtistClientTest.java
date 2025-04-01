@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -51,7 +52,7 @@ public class ArtistClientTest {
 
     @Test
     void shouldReturnAllArtistList() throws IOException {
-        final String requestUrl = artistBaseUri + "/internal/artist";
+        final String requestUrl = artistBaseUri + "/internal/artist?page=0&size=10";
         final String response = Constants.getResponse(new ClassPathResource("response/internal/artist/get-all.json"));
 
         mockServer.expect(
@@ -59,7 +60,7 @@ public class ArtistClientTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
-        List<Artist> artists = artistClient.getAll(null);
+        List<Artist> artists = artistClient.getAll(Pageable.ofSize(10), null);
 
         mockServer.verify();
         assertThat(artists).hasSize(3);

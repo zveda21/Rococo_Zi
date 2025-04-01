@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,7 +55,7 @@ class MuseumClientTest {
 
     @Test
     void shouldReturnAllMuseumList() {
-        final String requestUrl = museumBaseUri + "/internal/museum";
+        final String requestUrl = museumBaseUri + "/internal/museum?page=0&size=10";
         final String response = Constants.getResponse(new ClassPathResource("response/internal/museum/get-all.json"));
 
         mockServer.expect(
@@ -62,7 +63,7 @@ class MuseumClientTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(response, MediaType.APPLICATION_JSON));
 
-        List<Museum> museums = museumClient.getAll(null);
+        List<Museum> museums = museumClient.getAll(Pageable.ofSize(10), null);
 
         mockServer.verify();
         assertThat(museums).hasSize(2);
@@ -72,7 +73,7 @@ class MuseumClientTest {
 
     @Test
     void shouldThrowExceptionWhenServiceIsDown() {
-        final String requestUrl = museumBaseUri + "/internal/museum";
+        final String requestUrl = museumBaseUri + "/internal/museum?page=0&size=10";
 
         mockServer.expect(
                         requestTo(requestUrl))
@@ -80,7 +81,7 @@ class MuseumClientTest {
                 .andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
 
         assertThatThrownBy(
-                () -> museumClient.getAll(null))
+                () -> museumClient.getAll(Pageable.ofSize(10), null))
                 .isInstanceOf(RemoteServerException.class);
         mockServer.verify();
     }

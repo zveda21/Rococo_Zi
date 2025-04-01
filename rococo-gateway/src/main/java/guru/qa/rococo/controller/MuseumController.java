@@ -4,6 +4,7 @@ import guru.qa.rococo.controller.client.MuseumClient;
 import guru.qa.rococo.model.Museum;
 import guru.qa.rococo.model.page.RestPage;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -20,8 +21,8 @@ public class MuseumController {
     }
 
     @GetMapping()
-    public Page<Museum> getAll(@RequestParam(required = false) String title) {
-        return new RestPage<>(client.getAll(title));
+    public Page<Museum> getAll(Pageable pageable,  @RequestParam(required = false) String title) {
+        return new RestPage<>(client.getAll(pageable, title));
     }
 
     @GetMapping("/{id}")

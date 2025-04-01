@@ -11,6 +11,7 @@ import guru.qa.rococo.model.page.RestPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class GatewayPaintingController {
     }
 
     @GetMapping()
-    public Page<Painting> getAll(@RequestParam(required = false) String title) {
-        List<Painting> paintings = paintingClient.getAll(title);
+    public Page<Painting> getAll(Pageable pageable, @RequestParam(required = false) String title) {
+        List<Painting> paintings = paintingClient.getAll(pageable, title);
         return new RestPage<>(collectInfo(paintings));
     }
 
