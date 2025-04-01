@@ -31,6 +31,43 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+jib {
+    container {
+        ports = ['8080']
+        jvmFlags = ["-Dspring.profiles.active=" + (System.getenv("PROFILE") ?: "local")]
+        environment = [
+                'VAULT_TOKEN': System.getenv("VAULT_TOKEN") ?: "",
+                'TZ'         : 'Europe/Moscow'
+        ]
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        labels = [
+                'maintainer': 'Zi_Yan',
+                'version'   : project.version.toString()
+        ]
+    }
+    from {
+        image = project.ext.dockerImage.toString()
+        auth {
+            username = System.getenv("DOCKER_USERNAME") ?: ""
+            password = System.getenv("DOCKER_PASSWORD") ?: ""
+        }
+        platforms {
+            platform {
+                architecture = project.ext.dockerArch.toString()
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = "${project.ext.dockerHubName}/${project.name}-${System.getenv("PROFILE") ?: "local"}"
+        tags = ['latest', project.version.toString()]
+        auth {
+            username = System.getenv("DOCKER_USERNAME") ?: ""
+            password = System.getenv("DOCKER_PASSWORD") ?: ""
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
 }

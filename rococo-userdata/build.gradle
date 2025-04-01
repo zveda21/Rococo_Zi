@@ -31,29 +31,37 @@ dependencies {
 jib {
     container {
         ports = ['8089']
-        jvmFlags = ["-Dspring.profiles.active=${System.env.PROFILE}"]
+        jvmFlags = ["-Dspring.profiles.active=" + (System.getenv("PROFILE") ?: "local")]
         environment = [
-                'VAULT_TOKEN': "${System.env.VAULT_TOKEN}".toString(),
+                'VAULT_TOKEN': System.getenv("VAULT_TOKEN") ?: "",
                 'TZ'         : 'Europe/Moscow'
         ]
         creationTime = 'USE_CURRENT_TIMESTAMP'
         labels = [
-                'maintainer': 'Dmitrii Tuchs @dtuchs',
-                'version'   : "${project.version}".toString()
+                'maintainer': 'Zi_Yan',
+                'version'   : project.version.toString()
         ]
     }
     from {
-        image = "${project.ext.dockerImage}"
+        image = project.ext.dockerImage.toString()
+        auth {
+            username = System.getenv("DOCKER_USERNAME") ?: ""
+            password = System.getenv("DOCKER_PASSWORD") ?: ""
+        }
         platforms {
             platform {
-                architecture = "${project.ext.dockerArch}"
+                architecture = project.ext.dockerArch.toString()
                 os = 'linux'
             }
         }
     }
     to {
-        image = "${project.ext.dockerHubName}/${project.name}-${System.env.PROFILE}"
-        tags = ['latest', "${project.version}"]
+        image = "${project.ext.dockerHubName}/${project.name}-${System.getenv("PROFILE") ?: "local"}"
+        tags = ['latest', project.version.toString()]
+        auth {
+            username = System.getenv("DOCKER_USERNAME") ?: ""
+            password = System.getenv("DOCKER_PASSWORD") ?: ""
+        }
     }
 }
 

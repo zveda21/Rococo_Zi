@@ -28,27 +28,66 @@ spring:
     schema:
       introspection:
         enabled: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: 'http://127.0.0.1:9000'
----
-spring:
-  config:
-    activate:
-      on-profile: 'local'
-  autoconfigure:
-    exclude:
-      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
-      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
-
 logging:
   level:
     root: INFO
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://127.0.0.1:9000'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
 
+rococo-gateway:
+  base-uri: 'http://127.0.0.1:8080'
+rococo-artist:
+  base-uri: 'http://127.0.0.1:8282'
+rococo-museum:
+  base-uri: 'http://127.0.0.1:8383'
+rococo-painting:
+  base-uri: 'http://127.0.0.1:8484'
+rococo-userdata:
+  base-uri: 'http://127.0.0.1:8089'
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://rococo.auth.dc:9000'
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+
+rococo-gateway:
+  base-uri: 'http://rococo.gateway.dc:8080'
+rococo-artist:
+  base-uri: 'http://rococo.artist.dc:8282'
+rococo-museum:
+  base-uri: 'http://rococo.museum.dc:8383'
+rococo-painting:
+  base-uri: 'http://rococo.painting.dc:8484'
+rococo-userdata:
+  base-uri: 'http:/rococo.userdata.dc:8089'
+rococo-front:
+  base-uri: 'http://rococo.client.dc'
 
