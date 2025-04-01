@@ -1,4 +1,4 @@
-package qa.guru.rococo.jupiter.annotation.extension;
+package qa.guru.rococo.jupiter.extension;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
@@ -35,7 +35,7 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
     }
 
     public static ApiLoginExtension rest() {
-        return new ApiLoginExtension(false);
+        return new ApiLoginExtension(true);
     }
 
     /**

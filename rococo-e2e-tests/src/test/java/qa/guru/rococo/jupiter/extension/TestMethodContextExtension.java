@@ -1,4 +1,4 @@
-package qa.guru.rococo.jupiter.annotation.extension;
+package qa.guru.rococo.jupiter.extension;
 
 import org.junit.jupiter.api.extension.*;
 

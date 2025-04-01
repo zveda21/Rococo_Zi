@@ -7,7 +7,7 @@ import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import qa.guru.rococo.config.Config;
-import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
+import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
 import qa.guru.rococo.utils.OAuthUtils;
 import retrofit2.Response;
 import retrofit2.Retrofit;

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
 import qa.guru.rococo.jupiter.annotation.User;
-import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
-import qa.guru.rococo.jupiter.annotation.extension.TestMethodContextExtension;
+import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
+import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
 
 @ExtendWith({ApiLoginExtension.class, TestMethodContextExtension.class})
 public class OAuthTest {
