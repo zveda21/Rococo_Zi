@@ -2,7 +2,8 @@
 
 trap "echo 'Stopping all services...'; pkill -P $$; exit 0" SIGINT SIGTERM EXIT
 
-./gradlew build bootJar
+# Build all and skip e2e tests until everything is up and running
+./gradlew build bootJar -x :rococo-e2e-test:test
 
 echo "################ Run everything ################"
 export SPRING_PROFILES_ACTIVE=local
