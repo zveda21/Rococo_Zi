@@ -51,9 +51,9 @@ services:
     networks:
       - rococo-network
 
-  rococo.auth.dc:
+  auth.rococo.dc:
     image: zveda044/rococo-auth-docker:latest
-    container_name: rococo.auth.dc
+    container_name: auth.rococo.dc
     ports:
       - "9000:9000"
     restart: always
@@ -63,9 +63,9 @@ services:
     networks:
       - rococo-network
 
-  rococo.userdata.dc:
+  userdata.rococo.dc:
     image: zveda044/rococo-userdata-docker:latest
-    container_name: rococo.userdata.dc
+    container_name: userdata.rococo.dc
     ports:
       - "8089:8089"
     depends_on:
@@ -74,9 +74,9 @@ services:
     networks:
       - rococo-network
 
-  rococo.artist.dc:
+  artist.rococo.dc:
     image: zveda044/rococo-artist-docker:latest
-    container_name: rococo.artist.dc
+    container_name: artist.rococo.dc
     ports:
       - "8282:8282"
     depends_on:
@@ -84,9 +84,9 @@ services:
     networks:
       - rococo-network
 
-  rococo.museum.dc:
+  museum.rococo.dc:
     image: zveda044/rococo-museum-docker:latest
-    container_name: rococo.museum.dc
+    container_name: museum.rococo.dc
     ports:
       - "8383:8383"
     depends_on:
@@ -94,9 +94,9 @@ services:
     networks:
       - rococo-network
 
-  rococo.painting.dc:
+  painting.rococo.dc:
     image: zveda044/rococo-painting-docker:latest
-    container_name: rococo.painting.dc
+    container_name: painting.rococo.dc
     ports:
       - "8484:8484"
     depends_on:
@@ -104,13 +104,26 @@ services:
     networks:
       - rococo-network
 
-  rococo.gateway.dc:
+  gateway.rococo.dc:
     image: zveda044/rococo-gateway-docker:latest
-    container_name: rococo.gateway.dc
+    container_name: gateway.rococo.dc
     ports:
       - "8080:8080"
     depends_on:
-      - rococo.auth.dc
+      - auth.rococo.dc
+    networks:
+      - rococo-network
+
+  frontend.rococo.dc:
+    container_name: frontend.rococo.dc
+    image: zveda044/dococo-client-docker:latest
+    build:
+      context: ./rococo-client
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - gateway.rococo.dc
     networks:
       - rococo-network
 
