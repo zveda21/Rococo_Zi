@@ -34,4 +34,4 @@ else
 fi
 
 docker compose up -d
-docker ps -a
+docker ps
