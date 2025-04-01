@@ -1,3 +1,35 @@
+# Setup Guide
+
+# System environment variables
+export ROCOCO_DEFAULT_USERNAME=test
+export ROCOCO_DEFAULT_PASSWORD=123
+
+# Local
+zah local-setup.sh
+zsh local-all.sh
+zsh local-client.sh
+
+# Docker
+export DOCKER_USERNAME="<username>"
+export DOCKER_PASSWORD="<token from docker hub>"
+
+# Clean start
+zsh docker-compose-dev.sh
+
+# Re-run
+docker compose down
+docker compose up
+
+# Clean Test
+zsh docker-compose-e2e.sh
+
+# Re-run
+docker compose --profile test down
+docker compose --profile test up
+
+# Report
+http://localhost:5252/allure-docker-service-ui/projects/default
+
 # Rococo
 
   Приветствую тебя, мой дорогой студент!
