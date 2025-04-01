@@ -50,24 +50,37 @@ public class MuseumService {
             throw new NotFoundException("Museum not found " + museum.id());
         }
 
-        // todo validation
+        MuseumEntity entity = find.get();
+        setFields(entity, museum);
+
+        entity = museumRepository.save(entity);
+        log.info("Museum {} updated", entity.getId());
+
+        return Museum.ofEntity(entity);
+    }
+
+    @Transactional
+    public Museum create(Museum museum) {
+        MuseumEntity entity = new MuseumEntity();
+        setFields(entity, museum);
+
+        entity = museumRepository.save(entity);
+        return Museum.ofEntity(entity);
+    }
+
+    private void setFields(MuseumEntity entity, Museum museum) {
         final var city = museum.geo().city();
         Optional<GeoEntity> findGeo = geoRepository.findByCityIgnoreCase(city);
         if (findGeo.isEmpty()) {
             throw new NotFoundException("Location with city name " + city + " not found");
         }
 
-        MuseumEntity entity = find.get();
         entity.setTitle(museum.title());
         entity.setDescription(museum.description());
         entity.setGeo(findGeo.get());
+
         if (museum.photo() != null) {
             entity.setPhoto(museum.photo().getBytes(StandardCharsets.UTF_8));
         }
-
-        entity = museumRepository.save(entity);
-        log.info("Museum {} updated", entity.getId());
-
-        return Museum.ofEntity(entity);
     }
 }

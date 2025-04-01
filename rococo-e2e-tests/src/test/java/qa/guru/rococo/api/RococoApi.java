@@ -7,6 +7,8 @@ import qa.guru.rococo.model.rest.page.RestPage;
 import retrofit2.Call;
 import retrofit2.http.*;
 
+import javax.annotation.Nullable;
+
 public interface RococoApi {
     @GET("api/artist")
     Call<RestPage<Artist>> getArtists(
@@ -27,6 +29,7 @@ public interface RococoApi {
     @GET("api/museum")
     Call<RestPage<Museum>> getMuseums(
             @Header("Authorization") String bearerToken,
+            @Nullable @Query("title") String title,
             @Query("page") int page,
             @Query("size") int size);
 
@@ -40,17 +43,34 @@ public interface RococoApi {
             @Header("Authorization") String bearerToken,
             @Body Museum museum);
 
+    @PATCH("api/museum")
+    Call<Museum> updateMuseum(
+            @Header("Authorization") String bearerToken,
+            @Body Museum museum);
+
     @GET("api/painting")
     Call<RestPage<Painting>> getPaintings(
-            @Header("Authorization") String bearerToken);
+            @Header("Authorization") String bearerToken,
+            @Query("page") int page,
+            @Query("size") int size);
 
     @GET("api/painting/{id}")
     Call<Painting> getPaintingById(
             @Header("Authorization") String bearerToken,
             @Path("id") String id);
 
+    @GET("api/painting/author/{artistId}")
+    Call<RestPage<Painting>> getPaintingByArtistId(
+            @Header("Authorization") String bearerToken,
+            @Path("artistId") String artistId);
+
     @POST("api/painting")
     Call<Painting> createPainting(
+            @Header("Authorization") String bearerToken,
+            @Body Painting painting);
+
+    @PATCH("api/painting")
+    Call<Painting> updatePainting(
             @Header("Authorization") String bearerToken,
             @Body Painting painting);
 }

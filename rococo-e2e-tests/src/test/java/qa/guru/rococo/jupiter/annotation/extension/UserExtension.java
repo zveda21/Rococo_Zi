@@ -2,33 +2,34 @@ package qa.guru.rococo.jupiter.annotation.extension;
 
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
-import qa.guru.rococo.api.UsersClient;
+import qa.guru.rococo.api.AuthApiClient;
 import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.model.rest.UserJson;
 import qa.guru.rococo.utils.RandomDataUtils;
 
-public class UserExtension implements BeforeEachCallback, ParameterResolver {
+import java.util.Optional;
+
+public class UserExtension implements BeforeTestExecutionCallback, ParameterResolver {
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(UserExtension.class);
-    private static final String defaultPassword = "12345";
-
-    private final UsersClient usersClient = null; // todo fix new UsersApiClient();
+    public static final String defaultPassword = "123";
+    private static final AuthApiClient authApiClient = new AuthApiClient();
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
-                .ifPresent(userAnno -> {
-                    if ("".equals(userAnno.username())) {
-                        final String username = RandomDataUtils.randomUsername();
-                        UserJson testUser = usersClient.createUser(username, defaultPassword);
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
+        Optional<User> optional = AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class);
 
-                        // TODO not needed. replace with useful data
-//            usersClient.addIncomeInvitation(testUser, userAnno.incomeInvitations());
-//            usersClient.addOutcomeInvitation(testUser, userAnno.outcomeInvitations());
-//            usersClient.addFriend(testUser, userAnno.friends());
-                        setUser(testUser);
-                    }
-                });
+        if (optional.isEmpty()) {
+            return;
+        }
+
+        User userAnnotation = optional.get();
+        final String username = "".equals(userAnnotation.username()) ?
+                RandomDataUtils.randomUsername() :
+                userAnnotation.username();
+        authApiClient.register(username, defaultPassword);
+        final UserJson testUser = new UserJson(null, username, defaultPassword, null, null);
+        setUser(testUser);
     }
 
     @Override

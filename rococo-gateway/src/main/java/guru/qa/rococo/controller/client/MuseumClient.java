@@ -45,4 +45,9 @@ public class MuseumClient {
         HttpEntity<Museum> request = new HttpEntity<>(museum);
         return restTemplate.patchForObject(url, request, Museum.class);
     }
+
+    public Museum create(Museum museum) {
+        HttpEntity<Museum> request = new HttpEntity<>(museum);
+        return restTemplate.postForObject(url, request, Museum.class);
+    }
 }

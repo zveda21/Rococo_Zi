@@ -2,7 +2,7 @@
 
 trap "echo 'Stopping all services...'; pkill -P $$; exit 0" SIGINT SIGTERM EXIT
 
-#gradle build bootJar
+./gradlew build bootJar
 
 echo "################ Run everything ################"
 export SPRING_PROFILES_ACTIVE=local

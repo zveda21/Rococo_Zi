@@ -17,14 +17,4 @@ enum LocalConfig implements Config {
     public String authUrl() {
         return "http://127.0.0.1:9000/";
     }
-
-    @Override
-    public String defaultUsername() {
-        return EnvVars.ROCOCO_DEFAULT_USERNAME.get();
-    }
-
-    @Override
-    public String defaultPassword() {
-        return EnvVars.ROCOCO_DEFAULT_PASSWORD.get();
-    }
 }

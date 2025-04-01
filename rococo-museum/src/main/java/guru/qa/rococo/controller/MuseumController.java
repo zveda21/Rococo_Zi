@@ -37,4 +37,9 @@ public class MuseumController {
     public Museum update(@RequestBody Museum museum) {
         return service.update(museum);
     }
+
+    @PostMapping
+    public Museum create(@RequestBody Museum museum) {
+        return service.create(museum);
+    }
 }

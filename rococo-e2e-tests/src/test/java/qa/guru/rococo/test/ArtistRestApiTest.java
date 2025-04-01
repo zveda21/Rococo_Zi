@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import qa.guru.rococo.api.RococoApiClient;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
+import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
 import qa.guru.rococo.jupiter.annotation.extension.TestMethodContextExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
@@ -34,6 +35,7 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
+    @User
     @ExtendWith(TestMethodContextExtension.class)
     void artistApiTest(@Token String token) {
         final String name = faker.name().fullName();

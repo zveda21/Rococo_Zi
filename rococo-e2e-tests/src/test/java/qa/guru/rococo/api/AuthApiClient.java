@@ -78,7 +78,12 @@ public class AuthApiClient {
                 "authorization_code"
         ).execute();
 
-        return tokenResponse.body().get("id_token").asText();
+        JsonNode body = tokenResponse.body();
+        if (body == null) {
+            throw new LoginAttemptException();
+        }
+
+        return body.get("id_token").asText();
     }
 
     @SneakyThrows

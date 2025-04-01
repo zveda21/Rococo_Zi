@@ -36,7 +36,7 @@ public class RococoApiClient {
 
     @SneakyThrows
     public Page<Painting> getPaintings(String bearerToken) {
-        return rococoApi.getPaintings(bearerToken).execute().body();
+        return rococoApi.getPaintings(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
     }
 
     @SneakyThrows
@@ -45,8 +45,13 @@ public class RococoApiClient {
     }
 
     @SneakyThrows
-    public Page<Museum> getMuseums(String bearerToken) {
-        return rococoApi.getMuseums(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    public Page<Painting> getPaintingByArtistId(String bearerToken, String artistId) {
+        return rococoApi.getPaintingByArtistId(bearerToken, artistId).execute().body();
+    }
+
+    @SneakyThrows
+    public Page<Museum> getMuseums(String bearerToken, String title) {
+        return rococoApi.getMuseums(bearerToken, title, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
     }
 
     @SneakyThrows
@@ -57,5 +62,20 @@ public class RococoApiClient {
     @SneakyThrows
     public Museum createMuseum(String bearerToken, Museum museum) {
         return rococoApi.createMuseum(bearerToken, museum).execute().body();
+    }
+
+    @SneakyThrows
+    public Museum updateMuseum(String bearerToken, Museum museum) {
+        return rococoApi.updateMuseum(bearerToken, museum).execute().body();
+    }
+
+    @SneakyThrows
+    public Painting createPainting(String bearerToken, Painting painting) {
+        return rococoApi.createPainting(bearerToken, painting).execute().body();
+    }
+
+    @SneakyThrows
+    public Painting updatePainting(String bearerToken, Painting painting) {
+        return rococoApi.updatePainting(bearerToken, painting).execute().body();
     }
 }
