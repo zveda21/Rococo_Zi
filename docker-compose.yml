@@ -14,11 +14,11 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./postgres/script:/docker-entrypoint-initdb.d
-    command: ["postgres", "-c", "max_prepared_transactions=100"]
+    command: [ "postgres", "-c", "max_prepared_transactions=100" ]
     networks:
       - rococo-network
     healthcheck:
-      test: [ "CMD", "pg_isready" , "-U", "postgres_zi"]
+      test: [ "CMD", "pg_isready" , "-U", "postgres_zi" ]
       interval: 3s
       timeout: 3s
       retries: 5
@@ -159,9 +159,63 @@ services:
     networks:
       - rococo-network
 
+  rococo-e2e:
+    profiles: [ test ]
+    container_name: rococo-e2e
+    image: zveda044/rococo-e2e-tests:latest
+    build:
+      context: ./
+      dockerfile: ./rococo-e2e-tests/Dockerfile
+    environment:
+      - PROFILE=docker
+      - ALLURE_DOCKER_API=${ALLURE_DOCKER_API}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - BUILD_URL=${BUILD_URL}
+      - HEAD_COMMIT_MESSAGE=${HEAD_COMMIT_MESSAGE}
+      - EXECUTION_TYPE=${EXECUTION_TYPE}
+    volumes:
+      - allure-results:/rococo/rococo-e2e-tests/build/allure-results
+    depends_on:
+      frontend.rococo.dc:
+        condition: service_started
+    networks:
+      - rococo-network
+
+  allure:
+    profiles: [ test ]
+    container_name: allure
+    image: frankescobar/allure-docker-service:2.27.0
+    depends_on:
+      - rococo-e2e
+    environment:
+      - CHECK_RESULTS_EVERY_SECONDS=5
+      - KEEP_HISTORY=1
+    volumes:
+      - allure-results:/app/allure-results
+    ports:
+      - "5050:5050"
+    networks:
+      - rococo-network
+
+  allure-ui:
+    profiles: [ test ]
+    container_name: allure-ui
+    image: frankescobar/allure-docker-service-ui:7.0.3
+    depends_on:
+      - allure
+    environment:
+      - ALLURE_DOCKER_PUBLIC_API_URL=http://localhost:5050
+    ports:
+      - "5252:5252"
+    networks:
+      - rococo-network
+
 networks:
   rococo-network:
     driver: bridge
 
 volumes:
+  allure-results:
+    external: false
   pgdata:
+    external: false
