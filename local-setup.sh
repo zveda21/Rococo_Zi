@@ -9,11 +9,5 @@ docker volume rm rococo_zi_pgdata
 
 docker compose up -d
 
-gradle build bootJar
-
-echo "################ Setup completed ################"
-echo "# Run each command in separate terminal"
-echo "# ./local-rococo-artist.sh"
-echo "# ./local-rococo-museum.sh"
-echo "# ./local-rococo-gateway.sh"
-echo "# ./local-rococo-userdata.sh"
+# Build all and skip e2e tests until everything is up and running
+./gradlew build bootJar -x :rococo-e2e-test:test
