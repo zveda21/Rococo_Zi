@@ -32,7 +32,7 @@ public class OAuthTest {
     @Test
     @User
     @ExtendWith(TestMethodContextExtension.class)
-    void shouldGetUserWhenUserIsRegistered(UserJson user) {
+    void shouldGetUserWhenUserIsRegistered(@User UserJson user) {
         assertNotNull(user);
         assertNotNull(user.username());
         assertFalse(user.username().isEmpty());

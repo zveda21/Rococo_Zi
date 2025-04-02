@@ -32,11 +32,6 @@ public class UserExtension implements BeforeTestExecutionCallback, ParameterReso
         setUser(testUser);
     }
 
-//    @Override
-//    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-//        return parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
-//    }
-
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return parameterContext.getParameter().getType().equals(UserJson.class) &&
