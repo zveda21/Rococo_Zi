@@ -1,7 +1,7 @@
 package qa.guru.rococo.test.web;
 
 import com.codeborne.selenide.Selenide;
-import lombok.SneakyThrows;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -19,16 +19,28 @@ public class LoginTest {
 
     @RegisterExtension
     private static final UserExtension userExtension = new UserExtension();
+    private static final String PASSWORD = "123";
 
-    @SneakyThrows
+    @DisplayName("Check success login")
     @Test
     @User
     void mainPageShouldBeDisplayedAfterSuccessLogin() {
+        UserJson userJson = UserExtension.getUserJson();
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.goToLogin();
+        new LoginPage().login(userJson.username(), PASSWORD);
+        new MainPage().checkIfAvatarIconIsVisible();
+    }
 
+    @DisplayName("Check login functionality with bad credentials")
+    @Test
+    @User
+    void checkLoginFunctionalityWithBadCredentials() {
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
         UserJson userJson = UserExtension.getUserJson();
         mainPage.goToLogin();
-        new LoginPage().login(userJson.username(),"123");
-        Thread.sleep(2000);
+        new LoginPage().login(userJson.username(), "PASSWORD")
+                .checkError("Bad credentials");
+
     }
 }
