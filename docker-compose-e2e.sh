@@ -37,11 +37,10 @@ docker compose up -d
 docker ps
 
 echo ""
+echo "To attach to rococo-e2e container run:"
+echo "docker attach rococo-e2e"
 echo ""
-echo ""
-echo "Attaching to rococo-e2e container. Press Ctrl+C 3 times to detach"
 echo ""
 echo ""
 echo ""
 
-docker attach rococo-e2e

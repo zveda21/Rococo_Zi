@@ -159,7 +159,7 @@ services:
 
   frontend.rococo.dc:
     container_name: frontend.rococo.dc
-    image: zveda044/dococo-client-docker:latest
+    image: zveda044/rococo-client-docker:latest
     build:
       context: ./rococo-client
       dockerfile: ./Dockerfile
