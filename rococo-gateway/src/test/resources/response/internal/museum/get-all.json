@@ -1,0 +1,55 @@
+{
+  "content": [
+    {
+      "id": "Constants.Museum.ID_1",
+      "title": "Museum of Modern Art",
+      "description": "A museum dedicated to modern art.",
+      "photo": "data:image/jpeg;base64,...",
+      "geo": {
+        "city": "New York",
+        "country": {
+          "id": "11ee622c-cef6-ab30-8e63-0242ac110002",
+          "name": "United States"
+        }
+      }
+    },
+    {
+      "id": "Constants.Museum.ID_2",
+      "title": "Louvre Museum",
+      "description": "The world's largest art museum and a historic monument in Paris, France.",
+      "photo": "data:image/jpeg;base64,...",
+      "geo": {
+        "city": "Paris",
+        "country": {
+          "id": "11ee622c-cef6-ab30-8e63-0242ac110003",
+          "name": "France"
+        }
+      }
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 2,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 2,
+  "number": 0,
+  "first": true,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "size": 2,
+  "numberOfElements": 2,
+  "empty": false
+}

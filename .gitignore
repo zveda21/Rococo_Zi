@@ -19,6 +19,14 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+#logs
+logs/*
+**/logs/*/app.log*
+
+#reports
+rococo-e2e-tests/allure-results/
+allure-results/*
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

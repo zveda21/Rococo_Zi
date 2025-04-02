@@ -1,0 +1,19 @@
+rococo-museum:
+  base-uri: 'http://rococo-museum-mock-server'
+
+rococo-artist:
+  base-uri: 'http://rococo-artist-mock-server'
+
+rococo-painting:
+  base-uri: 'http://rococo-painting-mock-server'
+
+spring:
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+      - 'org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration'
+  cloud:
+    vault:
+      enabled: false
