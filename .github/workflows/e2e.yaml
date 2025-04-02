@@ -40,7 +40,7 @@ jobs:
       - name: Run e2e tests
         id: e2e
         run: |
-          docker compose up -d
+          docker compose --profile test up -d
           docker ps -a
           docker wait rococo-e2e-tests
           exit_code=$(docker inspect -f '{{.State.ExitCode}}' rococo-e2e-tests)
