@@ -1,6 +1,8 @@
 package qa.guru.rococo.api;
 
+import io.qameta.allure.okhttp3.AllureOkHttp3;
 import lombok.SneakyThrows;
+import okhttp3.OkHttpClient;
 import org.springframework.data.domain.Page;
 import qa.guru.rococo.config.Config;
 import qa.guru.rococo.model.rest.Artist;
@@ -9,12 +11,24 @@ import qa.guru.rococo.model.rest.Painting;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.time.Duration;
+
 public class RococoApiClient {
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_PAGE_SIZE = 100;
+
+    private static final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+    static {
+        builder.addNetworkInterceptor(new AllureOkHttp3());
+        builder.readTimeout(Duration.ofSeconds(30));
+    }
+
+    private final OkHttpClient client = builder.build();
+
     private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Config.getInstance().gatewayUrl())
             .addConverterFactory(JacksonConverterFactory.create())
+            .client(client)
             .build();
 
     private final RococoApi rococoApi = retrofit.create(RococoApi.class);

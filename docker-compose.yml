@@ -154,11 +154,6 @@ services:
         condition: service_healthy
       painting.rococo.dc:
         condition: service_healthy
-    healthcheck:
-      test: "wget --spider http://localhost:8080/api/session || exit 1"
-      interval: 10s
-      timeout: 10s
-      retries: 10
     networks:
       - rococo-network
 
@@ -172,7 +167,7 @@ services:
       - 80:80
     depends_on:
       gateway.rococo.dc:
-        condition: service_healthy
+        condition: service_started
     networks:
       - rococo-network
 
