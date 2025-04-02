@@ -29,12 +29,10 @@ Painting    http://localhost:8484/
 # Default username and password
 E2E tests either use a given username/password or register a new user.
 
-`@ApiLogin`: Accepts username and password. If none is given the following system variables will be used.
-```bash
-# Default username and password when @ApiLogin is used with empty parameters
-# The username and password should be pre-created
-export ROCOCO_DEFAULT_USERNAME=test
-export ROCOCO_DEFAULT_PASSWORD=123
+`@ApiLogin`: Accepts username and password. If none is given the default username and password will be used.
+```text
+Default username: admin
+Default password: admin
 ```
 
 `@User`: Registers a new user with given username or if skipped a random username will be created.

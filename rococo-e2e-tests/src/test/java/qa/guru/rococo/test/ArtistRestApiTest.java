@@ -12,8 +12,10 @@ import qa.guru.rococo.jupiter.annotation.Token;
 import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
 import qa.guru.rococo.jupiter.annotation.extension.TestMethodContextExtension;
+import qa.guru.rococo.jupiter.annotation.extension.UserExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
 import qa.guru.rococo.model.rest.Artist;
+import qa.guru.rococo.model.rest.UserJson;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +33,23 @@ public class ArtistRestApiTest {
     static void setUp() {
         client = new RococoApiClient();
         faker = new Faker();
+    }
+
+    @Test
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void testWithJustUser(UserJson user) {
+        System.out.println(user.toString());
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getAllArtists(@Token String token) {
+        System.out.println("Token " + token);
+        UserJson user = UserExtension.getUserJson();
+        System.out.println("UserJson " + user);
     }
 
     @Test
