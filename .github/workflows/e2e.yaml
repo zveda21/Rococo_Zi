@@ -10,7 +10,7 @@ jobs:
     env:
       PROFILE: docker
       COMPOSE_PROFILES: test
-      PREFIX: zveda21
+      PREFIX: zveda044
       ARCH: amd64
       ALLURE_DOCKER_API: ${{ secrets.ALLURE_DOCKER_API }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
