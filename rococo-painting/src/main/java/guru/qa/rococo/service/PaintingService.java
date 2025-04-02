@@ -70,9 +70,14 @@ public class PaintingService {
         if (painting.content() != null) {
             entity.setContent(painting.content().getBytes(StandardCharsets.UTF_8));
         }
-        
-        entity.setArtistId(painting.artistId());
-        entity.setMuseumId(painting.museumId());
+
+        if (painting.artistId() != null) {
+            entity.setArtistId(painting.artistId());
+        }
+
+        if (painting.museumId() != null) {
+            entity.setMuseumId(painting.museumId());
+        }
 
         return entity;
     }
@@ -80,7 +85,5 @@ public class PaintingService {
     private void validateFields(Painting painting) {
         Objects.requireNonNull(painting.title(), "Title should not be null");
         Objects.requireNonNull(painting.description(), "Description should not be null");
-        Objects.requireNonNull(painting.artistId(), "Artist Id should not be null");
-        Objects.requireNonNull(painting.museumId(), "Museum Id should not be null");
     }
 }

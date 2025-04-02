@@ -38,7 +38,63 @@ public class MuseumRestApiTest {
     @ApiLogin
     @User
     @ExtendWith(TestMethodContextExtension.class)
-    void museumApiTest(@Token String token) {
+    void getAllMuseums(@Token String token) {
+        var museums = client.getMuseums(token, null);
+
+        assertNotNull(museums);
+        assertFalse(museums.isEmpty());
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getMuseumsWithPageSize(@Token String token) {
+        var museums = client.getMuseums(token, 1);
+
+        assertNotNull(museums);
+        assertFalse(museums.isEmpty());
+        assertEquals(1, museums.getTotalElements());
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getMuseumsWithTitleSearch(@Token String token) {
+        final var searchTerm = "muse";
+        var museums = client.getMuseums(token, searchTerm);
+
+        assertNotNull(museums);
+        assertFalse(museums.isEmpty());
+        assertTrue(
+                museums.getContent()
+                        .stream().allMatch(
+                                item -> item.title().toLowerCase().contains(searchTerm)));
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getMuseumById(@Token String token) {
+        var museum = client.getMuseums(token, null).getContent().getFirst();
+        var id = museum.id().toString();
+
+        var byId = client.getMuseumById(token, id);
+
+        assertNotNull(museum);
+        assertEquals(
+                museum.title(),
+                byId.title(),
+                "Museum title should be the same");
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void createMuseum(@Token String token) {
         // Geolocation constants
         final var city = "Paris";
         final var expectedCountry = "France";
@@ -48,6 +104,7 @@ public class MuseumRestApiTest {
         var geoLocation = new GeoLocation(city, null);
         var museum = new Museum(null, museumTitle, faker.lorem().sentence(), "", geoLocation);
         var createdMuseum = client.createMuseum(token, museum);
+
         assertNotNull(
                 createdMuseum.id(),
                 "Created museum ID should not be null");
@@ -55,54 +112,36 @@ public class MuseumRestApiTest {
                 expectedCountry,
                 createdMuseum.geo().country().name(),
                 "Museum country should be France");
+    }
 
-        // Get all museums
-        var museums = client.getMuseums(token, null);
-        assertNotNull(museums);
-        assertFalse(museums.isEmpty());
-        assertTrue(
-                museums.getContent().stream().anyMatch(a -> a.id().equals(createdMuseum.id())),
-                "Created museum should be in the list");
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void updateMuseum(@Token String token) {
+        var museum = client.getMuseums(token, null).getContent().getFirst();
+        var updatedTitle = "UPDATED " + UUID.randomUUID() + " " + museum.title();
 
-        // Get museum by created id
-        var id = createdMuseum.id().toString();
-        museum = client.getMuseumById(token, id);
-        assertNotNull(museum);
-        assertEquals(
-                createdMuseum.title(),
-                museum.title(),
-                "Museum title should be the same");
-
-        // Get museum by title
-        var museumsSearch = client.getMuseums(token, museumTitle);
-        assertNotNull(museumsSearch);
-        assertEquals(1, museumsSearch.getTotalElements(), "Should find one museum");
-        assertTrue(
-                museums.getContent().stream().anyMatch(a -> a.id().equals(createdMuseum.id())),
-                "Created museum should be in the list");
-
-        // Update museum
-        var updatedTitle = "Updated title " + museumTitle;
-        var updatedDescription = "Updated description " + faker.lorem().sentence();
-        var updatedMuseum = new Museum(
-                createdMuseum.id(),
+        var body = new Museum(
+                museum.id(),
                 updatedTitle,
-                updatedDescription,
+                museum.description(),
                 "",
-                geoLocation);
-        var updatedMuseumResponse = client.updateMuseum(token, updatedMuseum);
-        assertNotNull(updatedMuseumResponse);
+                museum.geo());
+        var response = client.updateMuseum(token, body);
+
+        assertNotNull(response);
         assertEquals(
                 updatedTitle,
-                updatedMuseumResponse.title(),
+                response.title(),
                 "Museum title should be updated");
         assertEquals(
-                updatedDescription,
-                updatedMuseumResponse.description(),
-                "Museum description should be updated");
+                museum.description(),
+                response.description(),
+                "Museum description should not be updated");
         assertEquals(
-                city,
-                updatedMuseumResponse.geo().city(),
+                museum.geo().city(),
+                response.geo().city(),
                 "Museum geo location should remain the same");
     }
 }

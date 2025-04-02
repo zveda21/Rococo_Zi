@@ -21,11 +21,11 @@ public interface Config {
     String authUrl();
 
     default String defaultUsername() {
-        return EnvVars.ROCOCO_DEFAULT_USERNAME.get();
+        return "admin";
     }
 
     default String defaultPassword() {
-        return EnvVars.ROCOCO_DEFAULT_PASSWORD.get();
+        return "admin";
     }
 
     default Integer loginRetry() {

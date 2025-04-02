@@ -79,19 +79,21 @@ public class GatewayPaintingController {
 
     private void validatePaintingDependencies(Painting painting) {
         // check artist
-        try {
-            var artist = artistClient.getById(painting.artist().id());
-            Objects.requireNonNull(artist);
-        } catch (Exception e) {
-            throw new InvalidRequestException("Artist not found");
+        if (Objects.nonNull(painting.artist()) && Objects.nonNull(painting.artist().id())) {
+            try {
+                var artist = artistClient.getById(painting.artist().id());
+            } catch (Exception e) {
+                throw new InvalidRequestException("Artist not found");
+            }
         }
 
         // check museum
-        try {
-            var museum = museumClient.getById(painting.museum().id());
-            Objects.requireNonNull(museum);
-        } catch (Exception e) {
-            throw new InvalidRequestException("Museum not found");
+        if (Objects.nonNull(painting.museum()) && Objects.nonNull(painting.museum().id())) {
+            try {
+                var museum = museumClient.getById(painting.museum().id());
+            } catch (Exception e) {
+                throw new InvalidRequestException("Museum not found");
+            }
         }
     }
 

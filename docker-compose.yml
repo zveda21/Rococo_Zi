@@ -86,6 +86,9 @@ services:
       - rococo-network
     healthcheck:
       test: "wget --spider http://localhost:8089/actuator/health || exit 1"
+      interval: 6s
+      timeout: 6s
+      retries: 10
 
   artist.rococo.dc:
     image: zveda044/rococo-artist-docker:latest
@@ -99,6 +102,9 @@ services:
       - rococo-network
     healthcheck:
       test: "wget --spider http://localhost:8282/actuator/health || exit 1"
+      interval: 6s
+      timeout: 6s
+      retries: 10
 
   museum.rococo.dc:
     image: zveda044/rococo-museum-docker:latest
@@ -112,6 +118,9 @@ services:
       - rococo-network
     healthcheck:
       test: "wget --spider http://localhost:8383/actuator/health || exit 1"
+      interval: 6s
+      timeout: 6s
+      retries: 10
 
   painting.rococo.dc:
     image: zveda044/rococo-painting-docker:latest
@@ -125,6 +134,9 @@ services:
       - rococo-network
     healthcheck:
       test: "wget --spider http://localhost:8484/actuator/health || exit 1"
+      interval: 6s
+      timeout: 6s
+      retries: 10
 
   gateway.rococo.dc:
     image: zveda044/rococo-gateway-docker:latest
@@ -135,13 +147,13 @@ services:
       auth.rococo.dc:
         condition: service_started
       userdata.rococo.dc:
-        condition: service_started
+        condition: service_healthy
       artist.rococo.dc:
-        condition: service_started
+        condition: service_healthy
       museum.rococo.dc:
-        condition: service_started
+        condition: service_healthy
       painting.rococo.dc:
-        condition: service_started
+        condition: service_healthy
     networks:
       - rococo-network
 
@@ -174,16 +186,16 @@ services:
       - HEAD_COMMIT_MESSAGE=${HEAD_COMMIT_MESSAGE}
       - EXECUTION_TYPE=${EXECUTION_TYPE}
     volumes:
-      - allure-results:/rococo/rococo-e2e-tests/build/allure-results
+      - ./allure-results:/rococo/rococo-e2e-tests/allure-results
     depends_on:
       frontend.rococo.dc:
         condition: service_started
     networks:
       - rococo-network
 
-  allure:
+  rococo-allure:
     profiles: [ test ]
-    container_name: allure
+    container_name: rococo-allure
     image: frankescobar/allure-docker-service:2.27.0
     depends_on:
       - rococo-e2e
@@ -191,7 +203,7 @@ services:
       - CHECK_RESULTS_EVERY_SECONDS=5
       - KEEP_HISTORY=1
     volumes:
-      - allure-results:/app/allure-results
+      - ./allure-results:/app/allure-results
     ports:
       - "5050:5050"
     networks:
@@ -202,7 +214,7 @@ services:
     container_name: allure-ui
     image: frankescobar/allure-docker-service-ui:7.0.3
     depends_on:
-      - allure
+      - rococo-allure
     environment:
       - ALLURE_DOCKER_PUBLIC_API_URL=http://localhost:5050
     ports:
@@ -216,6 +228,4 @@ networks:
 
 volumes:
   allure-results:
-    external: false
   pgdata:
-    external: false

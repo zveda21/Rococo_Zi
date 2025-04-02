@@ -33,24 +33,50 @@ public class ArtistRestApiTest {
         faker = new Faker();
     }
 
+
     @Test
     @ApiLogin
     @User
     @ExtendWith(TestMethodContextExtension.class)
-    void artistApiTest(@Token String token) {
-        final String name = faker.name().fullName();
-        var artist = new Artist(null, name, faker.lorem().sentence(), "");
-        var createdArtist = client.createArtist(token, artist);
-        assertNotNull(
-                createdArtist.id(),
-                "Created artist ID should not be null");
-
+    void getAllArtists(@Token String token) {
         Page<Artist> artists = client.getArtists(token);
         assertNotNull(artists);
         assertFalse(artists.isEmpty());
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getArtistsWithPageSize(@Token String token) {
+        Page<Artist> artists = client.getArtists(token, 1);
+        assertNotNull(artists);
+        assertFalse(artists.isEmpty());
+        assertEquals(1, artists.getTotalElements());
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getArtistsWithNameSearch(@Token String token) {
+        final String name = "vincent";
+        Page<Artist> artists = client.getArtists(token, name);
+        assertNotNull(artists);
         assertTrue(
-                artists.getContent().stream().anyMatch(a -> a.id().equals(createdArtist.id())),
-                "Created artist should be in the list");
+                artists.getContent()
+                        .stream().allMatch(
+                                artist -> artist.name().toLowerCase().contains(name)));
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void getArtistById(@Token String token) {
+        final String name = faker.name().fullName();
+        var artist = new Artist(null, name, faker.lorem().sentence(), "");
+        var createdArtist = client.createArtist(token, artist);
 
         var id = createdArtist.id().toString();
         artist = client.getArtistById(token, id);
@@ -59,5 +85,38 @@ public class ArtistRestApiTest {
                 createdArtist.name(),
                 artist.name(),
                 "Artist name should be the same");
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void createArtist(@Token String token) {
+        final String name = faker.name().fullName();
+        var artist = new Artist(null, name, faker.lorem().sentence(), "");
+        var createdArtist = client.createArtist(token, artist);
+        assertNotNull(
+                createdArtist.id(),
+                "Created artist ID should not be null");
+    }
+
+    @Test
+    @ApiLogin
+    @User
+    @ExtendWith(TestMethodContextExtension.class)
+    void updateArtist(@Token String token) {
+        final String name = faker.name().fullName();
+        var artist = new Artist(null, name, faker.lorem().sentence(), "");
+        var createdArtist = client.createArtist(token, artist);
+        assertNotNull(
+                createdArtist.id(),
+                "Created artist ID should not be null");
+
+        final String updated = "UPDATED " + name;
+        var body = new Artist(createdArtist.id(), updated, createdArtist.biography(), createdArtist.photo());
+        var updatedArtist = client.updateArtist(token, body);
+
+        assertNotNull(updatedArtist, "Response should not be null");
+        assertEquals(updated, updatedArtist.name(), "Artist name should be updated");
     }
 }

@@ -8,4 +8,4 @@ COPY ./gradlew ./
 COPY ./build.gradle ./
 COPY ./settings.gradle ./
 
-CMD ./gradlew test -Dprofile=docker -Duser.timezone=Europe/Moscow
+CMD ./gradlew test -Dtest.env=docker -Dprofile=docker -Duser.timezone=Europe/Moscow

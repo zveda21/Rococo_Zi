@@ -13,7 +13,7 @@ java --version
 
 docker compose down
 docker_containers=$(docker ps -a -q)
-docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'niffler')
+docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'dococo')
 
 if [ ! -z "$docker_containers" ]; then
   echo "### Stop containers: $docker_containers ###"
@@ -34,3 +34,13 @@ bash ./gradlew jibDockerBuild -x :rococo-e2e-tests:test
 docker pull selenoid/vnc_chrome:127.0
 docker compose up -d
 docker ps
+
+echo ""
+echo ""
+echo ""
+echo "Attaching to rococo-e2e container. Press Ctrl+C 3 times to detach"
+echo ""
+echo ""
+echo ""
+
+docker attach rococo-e2e
