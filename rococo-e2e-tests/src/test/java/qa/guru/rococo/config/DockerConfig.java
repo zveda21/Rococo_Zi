@@ -22,4 +22,9 @@ enum DockerConfig implements Config {
     public String authUrl() {
         return "http://auth.rococo.dc:9000/";
     }
+
+    @Override
+    public String allureDockerServiceUrl() {
+        return "";
+    }
 }
