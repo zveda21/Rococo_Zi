@@ -25,7 +25,7 @@ logs/*
 
 #reports
 rococo-e2e-tests/allure-results/
-./allure-results/
+allure-results/*
 
 ### IntelliJ IDEA ###
 .idea
