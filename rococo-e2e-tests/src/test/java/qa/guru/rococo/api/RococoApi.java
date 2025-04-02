@@ -13,6 +13,7 @@ public interface RococoApi {
     @GET("api/artist")
     Call<RestPage<Artist>> getArtists(
             @Header("Authorization") String bearerToken,
+            @Nullable @Query("name") String name,
             @Query("page") int page,
             @Query("size") int size);
 
@@ -23,6 +24,11 @@ public interface RococoApi {
 
     @POST("api/artist")
     Call<Artist> createArtist(
+            @Header("Authorization") String bearerToken,
+            @Body Artist artist);
+
+    @PATCH("/api/artist")
+    Call<Artist> updateArtist(
             @Header("Authorization") String bearerToken,
             @Body Artist artist);
 

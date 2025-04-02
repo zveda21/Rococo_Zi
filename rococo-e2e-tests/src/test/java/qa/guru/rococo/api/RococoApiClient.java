@@ -21,7 +21,17 @@ public class RococoApiClient {
 
     @SneakyThrows
     public Page<Artist> getArtists(String bearerToken) {
-        return rococoApi.getArtists(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+        return rococoApi.getArtists(bearerToken, null, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    }
+
+    @SneakyThrows
+    public Page<Artist> getArtists(String bearerToken, String name) {
+        return rococoApi.getArtists(bearerToken, name, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    }
+
+    @SneakyThrows
+    public Page<Artist> getArtists(String bearerToken, int size) {
+        return rococoApi.getArtists(bearerToken, null, DEFAULT_PAGE, size).execute().body();
     }
 
     @SneakyThrows
@@ -32,6 +42,11 @@ public class RococoApiClient {
     @SneakyThrows
     public Artist createArtist(String bearerToken, Artist artist) {
         return rococoApi.createArtist(bearerToken, artist).execute().body();
+    }
+
+    @SneakyThrows
+    public Artist updateArtist(String bearerToken, Artist artist) {
+        return rococoApi.updateArtist(bearerToken, artist).execute().body();
     }
 
     @SneakyThrows
