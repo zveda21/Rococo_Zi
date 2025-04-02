@@ -4,11 +4,8 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.annotation.meta.WebTest;
 import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
-import qa.guru.rococo.jupiter.extension.UserExtension;
 import qa.guru.rococo.page.MainPage;
 import qa.guru.rococo.page.RegisterPage;
 
@@ -18,12 +15,9 @@ import static qa.guru.rococo.utils.RandomDataUtils.randomUsername;
 @ExtendWith(TestMethodContextExtension.class)
 public class RegisterTest {
 
-    @RegisterExtension
-    private static final UserExtension userExtension = new UserExtension();
     private static final String PASSWORD = "123";
 
     @Test
-    @User
     @DisplayName("Check success register")
     void checkSuccessRegistration() {
         String newUsername = randomUsername();
@@ -35,7 +29,6 @@ public class RegisterTest {
     }
 
     @Test
-    @User
     @DisplayName("Check should not register user with existing username")
     void checkShouldNotRegisterUserWithExistingUsername() {
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class)
@@ -47,7 +40,6 @@ public class RegisterTest {
     }
 
     @Test
-    @User
     @DisplayName("Check error when passwords not match")
     void checkPasswordsNotMatch() {
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class)
