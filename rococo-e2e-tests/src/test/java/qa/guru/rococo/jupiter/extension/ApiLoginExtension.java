@@ -31,11 +31,11 @@ public class ApiLoginExtension implements BeforeTestExecutionCallback, Parameter
     }
 
     public ApiLoginExtension() {
-        this.setupBrowser = false;
+        this.setupBrowser = true;
     }
 
     public static ApiLoginExtension rest() {
-        return new ApiLoginExtension(true);
+        return new ApiLoginExtension(false);
     }
 
     /**

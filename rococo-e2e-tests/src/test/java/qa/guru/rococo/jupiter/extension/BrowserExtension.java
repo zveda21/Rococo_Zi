@@ -29,7 +29,7 @@ public class BrowserExtension implements
 
     static {
         String browserType = System.getenv("BROWSER_TYPE");
-        if (browserType != null) {
+        if (browserType == null) {
             browserType = "chrome"; //by default
         }
         Configuration.browser = browserType;
