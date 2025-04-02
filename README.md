@@ -37,6 +37,17 @@ Default password: admin
 
 `@User`: Registers a new user with given username or if skipped a random username will be created.
 
+# Local Tests
+After all the services and the frontend is up and running, run the following commands to run E2E test locally:
+
+```bash
+# Set the test profile to local
+export PROFILE=local
+
+# Runs e2e test suit
+./gradlew :rococo-e2e-tests:test
+```
+
 # Docker
 To run services in dockerized mode, follow the steps:
 Set the system-wide environment variables, in `.zshrc` (or equivalent):
