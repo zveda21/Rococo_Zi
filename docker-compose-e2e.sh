@@ -7,7 +7,7 @@ export PREFIX="${IMAGE_PREFIX}"
 export ALLURE_DOCKER_API=http://allure:5050/
 export HEAD_COMMIT_MESSAGE="local build"
 export ARCH=$(uname -m)
-export BROWSER_TYPE="${$BROWSER}"
+export BROWSER_TYPE="${BROWSER_TYPE}"
 
 echo '### Java version ###'
 java --version
