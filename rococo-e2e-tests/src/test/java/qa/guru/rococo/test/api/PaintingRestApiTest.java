@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import qa.guru.rococo.api.RococoApiClient;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
-import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
 import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
@@ -50,7 +49,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getAllPaintings(@Token String token) {
         var paintings = client.getPaintings(token, null);
@@ -61,7 +59,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getPaintingsWithPageSize(@Token String token) {
         var paintings = client.getPaintings(token, 1);
@@ -73,7 +70,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getPaintingsWithTitleSearch(@Token String token) {
         var searchTerm = client.getPaintings(token, null).getContent().getFirst().title().substring(1).toLowerCase();
@@ -90,7 +86,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getPaintingById(@Token String token) {
         Painting first = client.getPaintings(token, null).getContent().getFirst();
@@ -104,7 +99,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getPaintingByArtistId(@Token String token) {
         Painting first = client.getPaintings(token, null).getContent().getFirst();
@@ -129,7 +123,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void createPainting(@Token String token) {
         var artist = getArtist(token, 0);
@@ -165,7 +158,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void updatePaintingTitleAndDescription(@Token String token) {
         Painting first = client.getPaintings(token, null).getContent().getFirst();
@@ -186,7 +178,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void updatePaintingArtist(@Token String token) {
         var artist = getArtist(token, 0);
@@ -214,7 +205,6 @@ public class PaintingRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void updatePaintingMuseum(@Token String token) {
         var artist = getArtist(token, 0);

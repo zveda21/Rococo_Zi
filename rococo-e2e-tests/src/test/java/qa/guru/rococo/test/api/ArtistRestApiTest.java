@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import qa.guru.rococo.api.RococoApiClient;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
-import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
 import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
@@ -36,7 +35,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getAllArtists(@Token String token) {
         Page<Artist> artists = client.getArtists(token);
@@ -46,7 +44,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getArtistsWithPageSize(@Token String token) {
         Page<Artist> artists = client.getArtists(token, 1);
@@ -57,7 +54,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getArtistsWithNameSearch(@Token String token) {
         final String name = "vincent";
@@ -71,7 +67,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getArtistById(@Token String token) {
         final String name = faker.name().fullName();
@@ -89,7 +84,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void createArtist(@Token String token) {
         final String name = faker.name().fullName();
@@ -102,7 +96,6 @@ public class ArtistRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void updateArtist(@Token String token) {
         final String name = faker.name().fullName();

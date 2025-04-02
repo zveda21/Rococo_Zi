@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import qa.guru.rococo.api.RococoApiClient;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
-import qa.guru.rococo.jupiter.annotation.User;
 import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
 import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
 import qa.guru.rococo.jupiter.annotation.meta.RestTest;
@@ -36,7 +35,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getAllMuseums(@Token String token) {
         var museums = client.getMuseums(token, null);
@@ -47,7 +45,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getMuseumsWithPageSize(@Token String token) {
         var museums = client.getMuseums(token, 1);
@@ -59,7 +56,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getMuseumsWithTitleSearch(@Token String token) {
         final var searchTerm = "muse";
@@ -75,7 +71,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void getMuseumById(@Token String token) {
         var museum = client.getMuseums(token, null).getContent().getFirst();
@@ -92,7 +87,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void createMuseum(@Token String token) {
         // Geolocation constants
@@ -116,7 +110,6 @@ public class MuseumRestApiTest {
 
     @Test
     @ApiLogin
-    @User
     @ExtendWith(TestMethodContextExtension.class)
     void updateMuseum(@Token String token) {
         var museum = client.getMuseums(token, null).getContent().getFirst();
