@@ -48,7 +48,7 @@ public class ArtistRestApiTest {
     @ApiLogin
     @User
     @ExtendWith(TestMethodContextExtension.class)
-    void getArtistsWithSize(@Token String token) {
+    void getArtistsWithPageSize(@Token String token) {
         Page<Artist> artists = client.getArtists(token, 1);
         assertNotNull(artists);
         assertFalse(artists.isEmpty());
@@ -61,7 +61,7 @@ public class ArtistRestApiTest {
     @ExtendWith(TestMethodContextExtension.class)
     void getArtistsWithNameSearch(@Token String token) {
         final String name = "vincent";
-        Page<Artist> artists = client.getArtists(token, 1);
+        Page<Artist> artists = client.getArtists(token, name);
         assertNotNull(artists);
         assertTrue(
                 artists.getContent()

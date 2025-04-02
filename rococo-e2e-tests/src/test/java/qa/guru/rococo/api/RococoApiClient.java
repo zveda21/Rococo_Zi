@@ -50,8 +50,13 @@ public class RococoApiClient {
     }
 
     @SneakyThrows
-    public Page<Painting> getPaintings(String bearerToken) {
-        return rococoApi.getPaintings(bearerToken, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    public Page<Painting> getPaintings(String bearerToken, String title) {
+        return rococoApi.getPaintings(bearerToken, title, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    }
+
+    @SneakyThrows
+    public Page<Painting> getPaintings(String bearerToken, int size) {
+        return rococoApi.getPaintings(bearerToken, null, DEFAULT_PAGE, size).execute().body();
     }
 
     @SneakyThrows
@@ -67,6 +72,11 @@ public class RococoApiClient {
     @SneakyThrows
     public Page<Museum> getMuseums(String bearerToken, String title) {
         return rococoApi.getMuseums(bearerToken, title, DEFAULT_PAGE, DEFAULT_PAGE_SIZE).execute().body();
+    }
+
+    @SneakyThrows
+    public Page<Museum> getMuseums(String bearerToken, int size) {
+        return rococoApi.getMuseums(bearerToken, null, DEFAULT_PAGE, size).execute().body();
     }
 
     @SneakyThrows

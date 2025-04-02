@@ -15,6 +15,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.time.Duration;
 import java.util.Optional;
 
 public class AuthApiClient {
@@ -41,6 +42,7 @@ public class AuthApiClient {
                         )
                 )
         );
+        builder.readTimeout(Duration.ofSeconds(30));
 
         var client = builder.build();
         final Retrofit retrofit = new Retrofit.Builder()

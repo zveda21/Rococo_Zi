@@ -57,6 +57,7 @@ public interface RococoApi {
     @GET("api/painting")
     Call<RestPage<Painting>> getPaintings(
             @Header("Authorization") String bearerToken,
+            @Nullable @Query("title") String title,
             @Query("page") int page,
             @Query("size") int size);
 
