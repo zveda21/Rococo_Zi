@@ -1,4 +1,4 @@
-package qa.guru.rococo.test;
+package qa.guru.rococo.test.api;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;

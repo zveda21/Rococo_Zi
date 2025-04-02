@@ -1,13 +1,13 @@
-package qa.guru.rococo.test;
+package qa.guru.rococo.test.api;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import qa.guru.rococo.jupiter.annotation.ApiLogin;
 import qa.guru.rococo.jupiter.annotation.Token;
 import qa.guru.rococo.jupiter.annotation.User;
-import qa.guru.rococo.jupiter.annotation.extension.ApiLoginExtension;
-import qa.guru.rococo.jupiter.annotation.extension.TestMethodContextExtension;
-import qa.guru.rococo.jupiter.annotation.extension.UserExtension;
+import qa.guru.rococo.jupiter.extension.ApiLoginExtension;
+import qa.guru.rococo.jupiter.extension.TestMethodContextExtension;
+import qa.guru.rococo.jupiter.extension.UserExtension;
 import qa.guru.rococo.model.rest.UserJson;
 
 import static org.junit.jupiter.api.Assertions.*;
