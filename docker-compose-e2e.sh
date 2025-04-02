@@ -13,7 +13,7 @@ java --version
 
 docker compose down
 docker_containers=$(docker ps -a -q)
-docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'dococo')
+docker_images=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'rococo')
 
 if [ ! -z "$docker_containers" ]; then
   echo "### Stop containers: $docker_containers ###"
