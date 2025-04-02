@@ -1,5 +1,6 @@
 package qa.guru.rococo.config;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public interface Config {
@@ -20,6 +21,11 @@ public interface Config {
 
     String authUrl();
 
+    @Nonnull
+    default String projectId() {
+        return "rococo_Zi";
+    }
+
     default String defaultUsername() {
         return "admin";
     }
@@ -39,4 +45,7 @@ public interface Config {
                 Objects.requireNonNullElse(EnvVars.ROCOCO_LOGIN_BACKOFF_MS.get(), "3000")
         );
     }
+
+    String allureDockerServiceUrl();
+
 }

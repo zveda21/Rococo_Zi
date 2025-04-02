@@ -1,2 +1,3 @@
 qa.guru.rococo.jupiter.extension.TestMethodContextExtension
 qa.guru.rococo.jupiter.extension.ApiLoginExtension
+qa.guru.rococo.jupiter.extension.AllureDockerServiceExtension
